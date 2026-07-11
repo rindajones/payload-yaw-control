@@ -1,3 +1,20 @@
 ---
-return Astro.redirect("/ja/");
+const base = import.meta.env.BASE_URL;
+const destination = `${base}/ja/`;
 ---
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="refresh" content={`0;url=${destination}`} />
+    <link rel="canonical" href={destination} />
+    <title>Payload Yaw Control</title>
+  </head>
+
+  <body>
+    <p>
+      <a href={destination}>日本語ページへ移動</a>
+    </p>
+  </body>
+</html>

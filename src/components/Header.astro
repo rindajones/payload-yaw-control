@@ -5,19 +5,21 @@ interface Props {
 
 const { lang } = Astro.props;
 
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
 const menus = {
   ja: [
-    { name: "概要", url: "/ja/#overview" },
-    { name: "制御環境", url: "/ja/#environment" },
-    { name: "制御結果", url: "/ja/#results" },
-    { name: "まとめ", url: "/ja/#summary" },
+    { name: "概要", url: `${base}/ja/#overview` },
+    { name: "制御環境", url: `${base}/ja/#environment` },
+    { name: "制御結果", url: `${base}/ja/#results` },
+    { name: "まとめ", url: `${base}/ja/#summary` },
   ],
 
   en: [
-    { name: "Overview", url: "/en/#overview" },
-    { name: "Environment", url: "/en/#environment" },
-    { name: "Results", url: "/en/#results" },
-    { name: "Summary", url: "/en/#summary" },
+    { name: "Overview", url: `${base}/en/#overview` },
+    { name: "Environment", url: `${base}/en/#environment` },
+    { name: "Results", url: `${base}/en/#results` },
+    { name: "Summary", url: `${base}/en/#summary` },
   ],
 };
 
@@ -32,7 +34,7 @@ const currentMenus = menus[lang];
 <header>
   <div class="container">
     <h1>
-      <a href={`/${lang}/`}>
+      <a href={`${base}/${lang}/`}>
         {siteName[lang]}
       </a>
     </h1>
@@ -48,7 +50,7 @@ const currentMenus = menus[lang];
 
       <nav class="language-nav" aria-label="言語切替">
         <a
-          href="/ja/"
+          href={`${base}/ja/`}
           aria-current={lang === "ja" ? "page" : undefined}
         >
           日本語
@@ -57,7 +59,7 @@ const currentMenus = menus[lang];
         <span>/</span>
 
         <a
-          href="/en/"
+          href={`${base}/en/`}
           aria-current={lang === "en" ? "page" : undefined}
         >
           English
