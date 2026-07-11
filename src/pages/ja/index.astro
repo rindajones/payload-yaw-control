@@ -1,0 +1,63 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+---
+
+<Layout title="吊り荷Yaw制御システムの開発" lang="ja">
+  <main>
+
+    <section class="hero">
+
+      <p class="hero-subtitle">
+        強化学習・画像姿勢推定・Raspberry Piによる実証
+      </p>
+
+      <h1>
+        吊り荷Yaw制御システムの開発
+      </h1>
+
+      <p class="hero-text">
+        画像から吊り荷の向きを推定し、
+        4基のスラスターで目標Yaw角へ自動制御します。
+      </p>
+
+
+      <div class="hero-video">
+  	  <video controls muted playsinline preload="metadata">
+		<source
+		src="/videos/Truss_0001-1900.mp4"
+		type="video/mp4"
+		/>
+		お使いのブラウザは動画再生に対応していません。
+	  </video>
+	  </div>	  
+
+    </section>
+
+	<section id="overview" class="overview">
+	<h2>概要</h2>
+
+	<p>
+		本システムは、吊り荷を目標Yaw角へ自動で回転させ、
+		外乱がある状態でも目標姿勢を維持することを目的としています。
+	</p>
+
+	<p>
+		吊り荷の向きは制御装置に搭載したカメラ画像から推定し、
+		推定したYaw角を用いて4基のスラスターを制御します。
+	</p>
+
+	<p>
+		制御モデルと画像姿勢推定を組み合わせ、
+		Raspberry Pi上で3Hzの制御を実行しました。
+	</p>
+
+    <p class="notice">
+	本サイトは開発状況に合わせて随時更新しています。
+	</p>
+	</section>
+
+
+  </main>
+
+</Layout>

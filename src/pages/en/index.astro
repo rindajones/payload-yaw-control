@@ -1,0 +1,73 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout
+  title="Image-based Payload Yaw Control"
+  lang="en"
+>
+  <main>
+
+    <section class="hero">
+
+        <p class="hero-subtitle">
+            Demonstration using Reinforcement Learning,
+            Image-based Pose Estimation,
+            and Raspberry Pi
+        </p>
+        <h1>
+            Image-based Payload Yaw Control
+        </h1>
+
+        <p class="hero-text">
+            The system estimates payload orientation from camera images
+            and automatically controls the yaw angle
+            using four thrusters.
+        </p>
+
+      <div class="hero-video">
+  	  <video controls muted playsinline preload="metadata">
+		<source
+		src="/videos/Truss_0001-1900.mp4"
+		type="video/mp4"
+		/>
+        Your browser does not support HTML5 video.
+	  </video>
+	  </div>	  
+
+    </section>
+
+	<section id="overview" class="overview">
+	<h2>Overview</h2>
+
+    <p>
+    This project demonstrates an image-based yaw control system
+    for suspended payloads.
+    The objective is to rotate the payload to a target yaw angle
+    and maintain its orientation under external disturbances.
+    </p>
+
+    <p>
+    Payload orientation is estimated directly from camera images
+    mounted on the control unit.
+    The estimated yaw angle is then used to control
+    four thrusters in real time.
+    </p>
+
+    <p>
+    The complete control pipeline,
+    including image-based pose estimation,
+    reinforcement learning,
+    and onboard inference,
+    was successfully demonstrated on
+    Raspberry Pi at a control frequency of 3 Hz.
+    </p>
+
+    <p class="notice">
+    This website is continuously updated as the project evolves.
+    </p>
+
+    </section>
+
+  </main>
+</Layout>

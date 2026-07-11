@@ -1,0 +1,27 @@
+---
+const { lang } = Astro.props;
+
+const labels = {
+  ja: {
+    contact: "お問い合わせ",
+  },
+
+  en: {
+    contact: "Contact",
+  },
+};
+
+const t = labels[lang];
+---
+
+<footer>
+  <div class="container">
+    <p>© 2026 Hidekazu Hayashida</p>
+
+    <nav>
+        <a href={`/${lang}/contact`}>
+        {lang === "ja" ? "お問い合わせ" : "Contact"}
+        </a>
+    </nav>
+  </div>
+</footer>

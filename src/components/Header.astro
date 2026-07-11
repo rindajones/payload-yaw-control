@@ -1,0 +1,68 @@
+---
+interface Props {
+  lang: "ja" | "en";
+}
+
+const { lang } = Astro.props;
+
+const menus = {
+  ja: [
+    { name: "概要", url: "/ja/#overview" },
+    { name: "制御環境", url: "/ja/#environment" },
+    { name: "制御結果", url: "/ja/#results" },
+    { name: "まとめ", url: "/ja/#summary" },
+  ],
+
+  en: [
+    { name: "Overview", url: "/en/#overview" },
+    { name: "Environment", url: "/en/#environment" },
+    { name: "Results", url: "/en/#results" },
+    { name: "Summary", url: "/en/#summary" },
+  ],
+};
+
+const siteName = {
+  ja: "吊り荷Yaw制御",
+  en: "Payload Yaw Control",
+};
+
+const currentMenus = menus[lang];
+---
+
+<header>
+  <div class="container">
+    <h1>
+      <a href={`/${lang}/`}>
+        {siteName[lang]}
+      </a>
+    </h1>
+
+    <div class="header-right">
+      <nav class="main-nav">
+        {
+          currentMenus.map((menu) => (
+            <a href={menu.url}>{menu.name}</a>
+          ))
+        }
+      </nav>
+
+      <nav class="language-nav" aria-label="言語切替">
+        <a
+          href="/ja/"
+          aria-current={lang === "ja" ? "page" : undefined}
+        >
+          日本語
+        </a>
+
+        <span>/</span>
+
+        <a
+          href="/en/"
+          aria-current={lang === "en" ? "page" : undefined}
+        >
+          English
+        </a>
+      </nav>
+    </div>
+  </div>
+</header>

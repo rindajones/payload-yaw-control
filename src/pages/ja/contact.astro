@@ -1,0 +1,39 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const email = "hayashida@rindatech.com";
+const linkedinUrl = "https://www.linkedin.com/in/hayashida-rindajones/";
+---
+
+<Layout title="お問い合わせ | 吊り荷Yaw制御" lang="ja">
+  <section class="contact">
+    <h1>お問い合わせ</h1>
+
+    <p class="contact-intro">
+      本技術に関するご質問、技術相談、共同開発などについては、
+      以下よりご連絡ください。
+    </p>
+
+    <div class="contact-list">
+      <section class="contact-item">
+        <h2>Email</h2>
+
+        <a href={`mailto:${email}`}>
+          {email}
+        </a>
+      </section>
+
+      <section class="contact-item">
+        <h2>LinkedIn</h2>
+
+        <a
+          href={linkedinUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          LinkedInプロフィール
+        </a>
+      </section>
+    </div>
+  </section>
+</Layout>

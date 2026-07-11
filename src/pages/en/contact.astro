@@ -1,0 +1,40 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const email = "hayashida@rindatech.com";
+const linkedinUrl = "https://www.linkedin.com/in/hayashida-rindajones/";
+
+---
+
+<Layout title="Contact | Payload Yaw Control" lang="en">
+  <section class="contact">
+    <h1>Contact</h1>
+
+    <p class="contact-intro">
+    If you are interested in this project, have a technical problem
+    you would like to discuss, or are considering collaboration,
+    please feel free to contact me.
+    </p>
+    <div class="contact-list">
+      <section class="contact-item">
+        <h2>Email</h2>
+
+        <a href={`mailto:${email}`}>
+          {email}
+        </a>
+      </section>
+
+      <section class="contact-item">
+        <h2>LinkedIn</h2>
+
+        <a
+          href={linkedinUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View my LinkedIn profile
+        </a>
+      </section>
+    </div>
+  </section>
+</Layout>
