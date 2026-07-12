@@ -1,0 +1,17 @@
+---
+interface Props {
+  message?: string;
+  lang?: "ja" | "en";
+}
+
+const {
+  lang = "ja",
+  message = lang === "ja"
+    ? "このページは現在作成中です。"
+    : "This page is currently under construction."
+} = Astro.props;
+---
+
+<section class="work-in-progress">
+  <p>{message}</p>
+</section>

@@ -1,0 +1,233 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import OverviewFlow from "../../components/OverviewFlow.astro";
+---
+
+<Layout title="概要 | 吊り荷Yaw制御" lang="en">
+    <main class="overview-page">
+        <section class="overview-intro">
+            <h1>Overview</h1>
+            <p>
+                In this project, we built a payload control environment, trained a reinforcement learning–based control model,
+                developed a camera-based yaw estimation model, and finally integrated both models for demonstration on a Raspberry Pi.
+                The final system successfully controlled the payload yaw under external disturbances.
+            </p>
+            <OverviewFlow lang="en" />
+        </section>
+
+        <section id="environment" class="overview-item">
+            <h2>Payload Control Environment</h2>
+            <p>
+                A simulation environment was developed that includes the control unit,
+                suspended payloads (truss, H-beam, and plate), ropes, and a crane.
+                The environment supports multiple payload configurations and external disturbance conditions for
+                both development and performance evaluation.
+            </p>
+            <div class="overview-images">
+                <figure>
+                    <img
+                        src={`${import.meta.env.BASE_URL}/images/overview/thrusters.png`}
+                        alt="Payload control unit with four thrusters"
+                    />
+                </figure>
+                <figure>
+                    <img
+                        src={`${import.meta.env.BASE_URL}/images/overview/truss.png`}
+                        alt="Truss payload used for control experiments"
+                    />
+                </figure>
+            </div>      
+            <div class="overview-next">
+                <a href={`${import.meta.env.BASE_URL}/en/environment/`}>
+                    Environment Details →
+                </a>
+            </div>
+        </section> 
+        <section id="control-model" class="overview-item">
+            <h2>Control Model Training</h2>
+            <p>
+                A reinforcement learning–based control model was trained to rotate the suspended payload to the target yaw angle.
+                Representative control results are shown below under X-direction (X1Y0) and X/Y-direction (X1Y1) disturbance conditions.
+                The model successfully achieved the target yaw under both disturbance conditions.
+            </p>
+            <div class="result-images">
+                <img
+                    src={`${import.meta.env.BASE_URL}/images/overview/chart_01.png`}
+                    alt="Yaw control results under X1Y0 disturbance conditions"
+                />
+                <img
+                    src={`${import.meta.env.BASE_URL}/images/overview/chart_02.png`}
+                    alt="Yaw control results under X1Y1 disturbance conditions"
+                />
+            </div>
+            <div class="overview-next">
+                <a href={`${import.meta.env.BASE_URL}/en/control_model/`}>
+                    Control Model Details →
+                </a>
+            </div>      
+        </section>
+
+        <section id="yaw-estimation" class="overview-item">
+            <h2>Yaw Estimation Model Training</h2>
+            <p>
+                A camera mounted on the control unit captures images used to estimate the payload yaw angle.
+                Colored hooks are first detected, and image-processing methods tailored to each payload geometry are then applied to determine the yaw angle.
+                The examples below show the estimation process for the H-beam, plate, and truss payloads.
+            </p>
+            <figure class="feature-image">
+                <img
+                    src={`${import.meta.env.BASE_URL}/images/overview/yaw-estimation.png`}
+                    alt="Yaw estimation examples for H-beam, plate, and truss payloads"
+                    loading="lazy"
+                />
+            </figure>      
+            <div class="overview-next">
+                <a href={`${import.meta.env.BASE_URL}/en/yaw_estimation/`}>
+                    Yaw Estimation Details →
+                </a>
+            </div>      
+        </section>
+
+        <section id="raspberry-pi" class="overview-item">
+            <h2>Control Demo on Raspberry Pi</h2>
+            <p>
+                The payload yaw estimation model and the reinforcement learning–based control model were integrated and executed on a Raspberry Pi.
+                The results below compare the Raspberry Pi implementation with the development environment under identical disturbance conditions,
+                demonstrating equivalent control performance.
+            </p>
+            <div class="result-images">
+                <img
+                    src={`${import.meta.env.BASE_URL}/images/overview/Pi_chart_01.png`}
+                    alt="Control results in the development environment"
+                />
+                <img
+                    src={`${import.meta.env.BASE_URL}/images/overview/Pi_chart_02.png`}
+                    alt="Control results on Raspberry Pi"
+                />
+            </div>
+            <div class="overview-next">
+                <a href={`${import.meta.env.BASE_URL}/en/raspberry_pi/`}>
+                    Raspberry Pi Details →
+                </a>
+            </div>            
+        </section>
+    </main>
+</Layout>
+
+<style>
+    .overview-page {
+    width: min(100% - 40px, 1000px);
+    margin: 0 auto;
+    padding: 48px 0 0px;
+    }
+
+    .overview-intro h1 {
+    margin: 0 0 24px;
+    font-size: clamp(32px, 5vw, 46px);
+    font-weight: 500;
+    }
+
+    .overview-intro p,
+    .overview-item p {
+    margin: 0 0 18px;
+    font-size: 18px;
+    line-height: 1.9;
+    }
+
+    .overview-item {
+    padding: 36px 0;
+    border-top: 1px solid #ddd;
+    }
+
+    .overview-item h2 {
+    margin: 0 0 16px;
+    font-size: clamp(24px, 3vw, 30px);
+    font-weight: 500;
+    }
+
+    @media (max-width: 700px) {
+    .overview-page {
+        width: min(100% - 28px, 1000px);
+        padding-top: 32px;
+    }
+
+    .overview-intro p,
+    .overview-item p {
+        font-size: 16px;
+        line-height: 1.8;
+    }
+    }
+
+    .overview-images {
+    display: grid;
+    grid-template-columns: 1fr 1.45fr;
+    gap: 4px;
+    margin: 24px 0;
+    align-items: stretch;
+    }
+
+    .overview-images figure {
+    margin: 0;
+    }
+
+    .overview-images img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    }
+
+    @media (max-width: 700px) {
+    .overview-images {
+        grid-template-columns: 1fr;
+    }
+
+
+    .overview-images img {
+        height: auto;
+    }
+    }  
+
+    .overview-next {
+    display: flex;
+    justify-content: flex-end;
+    margin: 16px 0 0px;
+    }
+
+    .overview-next a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: 500;
+    }
+
+    .overview-next a:hover {
+    text-decoration: underline;
+    }
+
+    .environment-images {
+        display: grid;
+        grid-template-columns: 1fr 1.45fr;
+        gap: 8px;
+    }
+    .result-images {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .result-images img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .feature-image {
+        margin: 0;
+    }
+
+    .feature-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    }
+</style>

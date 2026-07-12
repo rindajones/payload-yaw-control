@@ -1,0 +1,228 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import OverviewFlow from "../../components/OverviewFlow.astro";
+---
+
+<Layout title="概要 | 吊り荷Yaw制御" lang="ja">
+    <main class="overview-page">
+        <section class="overview-intro">
+            <h1>概要</h1>
+            <p>
+            本プロジェクトでは、吊り荷の制御環境を構築し、強化学習による制御モデルとカメラ画像によるYaw角推定を組み合わせました。
+            最終的に、制御モデルとYaw角推定を統合したシステムを Raspberry Pi環境で動作させ、3Hzでの制御を実証しました。
+            </p>
+            <OverviewFlow lang="ja" />
+        </section>
+
+        <section id="environment" class="overview-item">
+            <h2>吊り荷の制御環境の構築</h2>
+            <p>
+                制御装置、吊り荷（トラス、H形鋼、平板）、ロープおよびクレーンを含むシミュレーション環境を構築しました。
+                複数の吊り荷形状や風外乱に対応できる開発・評価環境としています。
+            </p>
+            <div class="overview-images">
+                <figure>
+                    <img
+                        src={`${import.meta.env.BASE_URL}/images/overview/thrusters.png`}
+                        alt="吊り荷制御装置と4基のスラスター"
+                    />
+                </figure>
+                <figure>
+                    <img
+                        src={`${import.meta.env.BASE_URL}/images/overview/truss.png`}
+                        alt="制御対象のトラス吊り荷"
+                    />
+                </figure>
+            </div>      
+            <div class="overview-next">
+                <a href={`${import.meta.env.BASE_URL}/ja/environment/`}>
+                    制御環境の詳細 →
+                </a>
+            </div>
+        </section> 
+        <section id="control-model" class="overview-item">
+            <h2>吊り荷の制御モデルの学習</h2>
+            <p>
+                強化学習により、吊り荷を目標Yaw角まで回転させる制御モデルを構築しました。
+                下図は一方向風（X1Y0）および二方向風（X1Y1）の外乱条件における制御結果を示しています。
+            </p>
+            <div class="result-images">
+                <img
+                    src={`${import.meta.env.BASE_URL}/images/overview/chart_01.png`}
+                    alt="制御結果 X1Y0"
+                />
+                <img
+                    src={`${import.meta.env.BASE_URL}/images/overview/chart_02.png`}
+                    alt="制御結果 X1Y0"
+                />
+            </div>
+            <div class="overview-next">
+                <a href={`${import.meta.env.BASE_URL}/ja/control_model/`}>
+                    制御モデル学習の詳細 →
+                </a>
+            </div>      
+        </section>
+
+        <section id="yaw-estimation" class="overview-item">
+            <h2>吊り荷Yaw角の推定モデル学習</h2>
+            <p>
+                制御装置に搭載したカメラ画像から吊り荷のYaw角を推定します。
+                色付きフックの検出結果と画像処理を組み合わせ、
+                吊り荷の形状に応じたYaw角推定を行います。
+            </p>
+            <figure class="feature-image">
+                <img
+                    src={`${import.meta.env.BASE_URL}/images/overview/yaw-estimation.png`}
+                    alt="色付きフックの検出結果と吊り荷Yaw角の推定"
+                    loading="lazy"
+                />
+            </figure>      
+            <div class="overview-next">
+                <a href={`${import.meta.env.BASE_URL}/ja/yaw_estimation/`}>
+                    Yaw角推定モデル学習の詳細 →
+                </a>
+            </div>      
+        </section>
+
+        <section id="raspberry-pi" class="overview-item">
+            <h2>Raspberry Pi環境での制御実証</h2>
+            <p>
+                Yaw角推定モデルと強化学習による制御モデルを統合し、Raspberry Pi上で推論・制御を実行しました。
+                開発環境と同様に、外乱下でも吊り荷を目標Yaw角まで制御できることを確認しました。
+            </p>
+            <div class="result-images">
+                <img
+                    src={`${import.meta.env.BASE_URL}/images/overview/Pi_chart_01.png`}
+                    alt="開発環境での制御結果 X1Y1"
+                />
+                <img
+                    src={`${import.meta.env.BASE_URL}/images/overview/Pi_chart_02.png`}
+                    alt="Raspberry Pi 制御結果 X1Y1"
+                />
+            </div>
+            <div class="overview-next">
+                <a href={`${import.meta.env.BASE_URL}/ja/raspberry_pi/`}>
+                    Raspberry Pi 環境の詳細 →
+                </a>
+            </div>            
+        </section>
+    </main>
+</Layout>
+
+<style>
+    .overview-page {
+    width: min(100% - 40px, 1000px);
+    margin: 0 auto;
+    padding: 48px 0 0px;
+    }
+
+    .overview-intro h1 {
+    margin: 0 0 24px;
+    font-size: clamp(32px, 5vw, 46px);
+    font-weight: 500;
+    }
+
+    .overview-intro p,
+    .overview-item p {
+    margin: 0 0 18px;
+    font-size: 18px;
+    line-height: 1.9;
+    }
+
+    .overview-item {
+    padding: 36px 0;
+    border-top: 1px solid #ddd;
+    }
+
+    .overview-item h2 {
+    margin: 0 0 16px;
+    font-size: clamp(24px, 3vw, 30px);
+    font-weight: 500;
+    }
+
+    @media (max-width: 700px) {
+    .overview-page {
+        width: min(100% - 28px, 1000px);
+        padding-top: 32px;
+    }
+
+    .overview-intro p,
+    .overview-item p {
+        font-size: 16px;
+        line-height: 1.8;
+    }
+    }
+
+    .overview-images {
+    display: grid;
+    grid-template-columns: 1fr 1.45fr;
+    gap: 4px;
+    margin: 24px 0;
+    align-items: stretch;
+    }
+
+    .overview-images figure {
+    margin: 0;
+    }
+
+    .overview-images img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    }
+
+    @media (max-width: 700px) {
+    .overview-images {
+        grid-template-columns: 1fr;
+    }
+
+
+    .overview-images img {
+        height: auto;
+    }
+    }  
+
+    .overview-next {
+    display: flex;
+    justify-content: flex-end;
+    margin: 16px 0 0px;
+    }
+
+    .overview-next a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: 500;
+    }
+
+    .overview-next a:hover {
+    text-decoration: underline;
+    }
+
+    .environment-images {
+        display: grid;
+        grid-template-columns: 1fr 1.45fr;
+        gap: 8px;
+    }
+    .result-images {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .result-images img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .feature-image {
+        margin: 0;
+    }
+
+    .feature-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    }
+</style>
