@@ -5,22 +5,22 @@ import Header from "../../components/Header.astro";
 const base = import.meta.env.BASE_URL;
 ---
 
-<Layout title="吊り荷Yaw制御システムの開発" lang="ja">
+<Layout title="吊り荷 Yaw 制御システムの開発" lang="ja">
   <main>
 
     <section class="hero">
 
       <p class="hero-subtitle">
-        強化学習・画像姿勢推定・Raspberry Piによる実証
+        強化学習・画像姿勢推定・Raspberry Pi による実証
       </p>
 
-      <h1>
-        吊り荷Yaw制御システムの開発
-      </h1>
+      <h2>
+        吊り荷 Yaw 制御システムの開発
+      </h2>
 
       <p class="hero-text">
         画像から吊り荷の向きを推定し、
-        4基のスラスターで目標Yaw角へ自動制御します。
+        4基のスラスターで目標 Yaw 角へ自動制御します。
       </p>
 
 
@@ -37,10 +37,8 @@ const base = import.meta.env.BASE_URL;
     </section>
 
 	<section id="overview" class="overview">
-	<h2>概要</h2>
-
 	<p>
-		本システムは、吊り荷を目標Yaw角へ自動で回転させ、
+		本システムは、吊り荷を目標 Yaw 角へ自動で回転させ、
 		外乱がある状態でも目標姿勢を維持することを目的としています。
 	</p>
 
@@ -51,7 +49,7 @@ const base = import.meta.env.BASE_URL;
 
 	<p>
 		制御モデルと画像姿勢推定を組み合わせ、
-		Raspberry Pi上で3Hzの制御を実行しました。
+		Raspberry Pi 上で 3Hz の制御を実行しました。
 	</p>
 
     <p class="notice">

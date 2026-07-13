@@ -3,13 +3,13 @@ import Layout from "../../layouts/Layout.astro";
 import OverviewFlow from "../../components/OverviewFlow.astro";
 ---
 
-<Layout title="概要 | 吊り荷Yaw制御" lang="ja">
+<Layout title="概要 | 吊り荷 Yaw 制御" lang="ja">
     <main class="overview-page">
         <section class="overview-intro">
             <h1>概要</h1>
             <p>
-            本プロジェクトでは、吊り荷の制御環境を構築し、強化学習による制御モデルとカメラ画像によるYaw角推定を組み合わせました。
-            最終的に、制御モデルとYaw角推定を統合したシステムを Raspberry Pi環境で動作させ、3Hzでの制御を実証しました。
+            本プロジェクトでは、吊り荷の制御環境を構築し、強化学習による制御モデルとカメラ画像による Yaw 角推定を組み合わせました。
+            最終的に、制御モデルと Yaw 角推定を統合したシステムを Raspberry Pi 環境で動作させ、3Hz での制御を実証しました。
             </p>
             <OverviewFlow lang="ja" />
         </section>
@@ -64,11 +64,11 @@ import OverviewFlow from "../../components/OverviewFlow.astro";
         </section>
 
         <section id="yaw-estimation" class="overview-item">
-            <h2>吊り荷Yaw角の推定モデル学習</h2>
+            <h2>吊り荷 Yaw 角の推定モデル学習</h2>
             <p>
-                制御装置に搭載したカメラ画像から吊り荷のYaw角を推定します。
+                制御装置に搭載したカメラ画像から吊り荷の Yaw 角を推定します。
                 色付きフックの検出結果と画像処理を組み合わせ、
-                吊り荷の形状に応じたYaw角推定を行います。
+                吊り荷の形状に応じた Yaw 角推定を行います。
             </p>
             <figure class="feature-image">
                 <img
@@ -79,16 +79,16 @@ import OverviewFlow from "../../components/OverviewFlow.astro";
             </figure>      
             <div class="overview-next">
                 <a href={`${import.meta.env.BASE_URL}/ja/yaw_estimation/`}>
-                    Yaw角推定モデル学習の詳細 →
+                    Yaw 角推定モデル学習の詳細 →
                 </a>
             </div>      
         </section>
 
         <section id="raspberry-pi" class="overview-item">
-            <h2>Raspberry Pi環境での制御実証</h2>
+            <h2>Raspberry Pi 環境での制御実証</h2>
             <p>
-                Yaw角推定モデルと強化学習による制御モデルを統合し、Raspberry Pi上で推論・制御を実行しました。
-                開発環境と同様に、外乱下でも吊り荷を目標Yaw角まで制御できることを確認しました。
+                Yaw 角推定モデルと強化学習による制御モデルを統合し、Raspberry Pi 上で推論・制御を実行しました。
+                開発環境と同様に、外乱下でも吊り荷を目標 Yaw 角まで制御できることを確認しました。
             </p>
             <div class="result-images">
                 <img

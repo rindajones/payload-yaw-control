@@ -10,21 +10,22 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const menus = {
   ja: [
     { name: "概要", url: `${base}/ja/overview` },
+    { name: "制御環境", url: `${base}/ja/environment` },
   ],
 
   en: [
     { name: "Overview", url: `${base}/en/overview` },
+    { name: "Environment", url: `${base}/en/environment` },
   ],
 };
 
 const siteName = {
-  ja: "吊り荷Yaw制御",
+  ja: "吊り荷 Yaw 制御",
   en: "Payload Yaw Control",
 };
 
 const currentMenus = menus[lang];
 ---
-
 <header>
   <div class="container">
     <h1>
@@ -33,7 +34,7 @@ const currentMenus = menus[lang];
       </a>
     </h1>
 
-    <div class="header-right">
+    <div class="header-bottom">
       <nav class="main-nav">
         {
           currentMenus.map((menu) => (
@@ -62,3 +63,36 @@ const currentMenus = menus[lang];
     </div>
   </div>
 </header>
+
+<style>
+  header .container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px 0;
+  }
+
+  header h1 {
+    width: 100%;
+    text-align: center;
+  }
+
+  .header-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .main-nav {
+    display: flex;
+    gap: 32px;
+  }
+
+  .language-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+</style>
