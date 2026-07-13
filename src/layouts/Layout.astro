@@ -11,21 +11,32 @@ interface Props {
 
 const { title, lang } = Astro.props;
 const base = import.meta.env.BASE_URL;
+const descriptions = {
+  ja: "強化学習、画像による Yaw 推定、Raspberry Pi を組み合わせた吊り荷 Yaw 制御システムの技術紹介",
+  en: "A technical introduction to a payload yaw control system combining reinforcement learning, image-based yaw estimation, and Raspberry Pi.",
+};
+
+const description = descriptions[lang];
 ---
 
-<!DOCTYPE html>
 <html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="icon" href={`${base}favicon.ico`} />
+    <link rel="icon" href={`${base}favicon.ico`} />
 
     <title>{title}</title>
 
+    <meta name="description" content={description} />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
     <meta
-      name="description"
-      content="強化学習、画像によるYaw推定、Raspberry Piを組み合わせた吊り荷Yaw制御システムの技術紹介"
+      property="og:locale"
+      content={lang === "ja" ? "ja_JP" : "en_US"}
     />
+    <meta property="og:url" content={`https://rindajones.github.io${base}${lang}/`} />
   </head>
 
   <body>
