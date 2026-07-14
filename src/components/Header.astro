@@ -40,19 +40,21 @@ const currentMenus = menus[lang];
       <details class="mobile-menu">
         <summary aria-label="メニューを開く">☰</summary>
 
-        <nav class="mobile-main-nav">
-          {
-            currentMenus.map((menu) => (
-              <a href={menu.url}>{menu.name}</a>
-            ))
-          }
-        </nav>
+        <div class="mobile-menu-panel">
+          <nav class="mobile-main-nav">
+            {
+              currentMenus.map((menu) => (
+                <a href={menu.url}>{menu.name}</a>
+              ))
+            }
+          </nav>
 
-        <nav class="mobile-language-nav" aria-label="言語切替">
-          <a href={`${base}/ja/`}>日本語</a>
-          <span>/</span>
-          <a href={`${base}/en/`}>English</a>
-        </nav>
+          <nav class="mobile-language-nav" aria-label="言語切替">
+            <a href={`${base}/ja/`}>日本語</a>
+            <span>/</span>
+            <a href={`${base}/en/`}>English</a>
+          </nav>
+        </div>
       </details>
     </div>
 
@@ -114,17 +116,22 @@ const currentMenus = menus[lang];
     align-items: center;
     gap: 12px;
   }
+
   .header-top {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
-
   .mobile-menu {
     display: none;
   }
 
   @media (max-width: 700px) {
+    .header-top {
+      position: relative;
+    }
+
     .header-bottom {
       display: none;
     }
@@ -136,24 +143,38 @@ const currentMenus = menus[lang];
     .mobile-menu summary {
       cursor: pointer;
       list-style: none;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
+      line-height: 1;
     }
 
     .mobile-menu summary::-webkit-details-marker {
       display: none;
     }
 
+    .mobile-menu-panel {
+      position: absolute;
+      top: calc(100% + 16px);
+      left: 0;
+      right: 0;
+      z-index: 10;
+      padding: 20px;
+      background: white;
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+    }
+
     .mobile-main-nav {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-top: 16px;
+      gap: 16px;
     }
 
     .mobile-language-nav {
       display: flex;
       gap: 8px;
-      margin-top: 16px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid #ddd;
     }
   }
 </style>
