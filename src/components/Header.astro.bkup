@@ -30,31 +30,11 @@ const currentMenus = menus[lang];
 ---
 <header>
   <div class="container">
-    <div class="header-top">
-      <h1>
-        <a href={`${base}/${lang}/`}>
-          {siteName[lang]}
-        </a>
-      </h1>
-
-      <details class="mobile-menu">
-        <summary aria-label="メニューを開く">☰</summary>
-
-        <nav class="mobile-main-nav">
-          {
-            currentMenus.map((menu) => (
-              <a href={menu.url}>{menu.name}</a>
-            ))
-          }
-        </nav>
-
-        <nav class="mobile-language-nav" aria-label="言語切替">
-          <a href={`${base}/ja/`}>日本語</a>
-          <span>/</span>
-          <a href={`${base}/en/`}>English</a>
-        </nav>
-      </details>
-    </div>
+    <h1>
+      <a href={`${base}/${lang}/`}>
+        {siteName[lang]}
+      </a>
+    </h1>
 
     <div class="header-bottom">
       <nav class="main-nav">
@@ -72,7 +52,9 @@ const currentMenus = menus[lang];
         >
           日本語
         </a>
+
         <span>/</span>
+
         <a
           href={`${base}/en/`}
           aria-current={lang === "en" ? "page" : undefined}
@@ -114,46 +96,12 @@ const currentMenus = menus[lang];
     align-items: center;
     gap: 12px;
   }
-  .header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .mobile-menu {
-    display: none;
-  }
-
   @media (max-width: 700px) {
-    .header-bottom {
-      display: none;
-    }
-
-    .mobile-menu {
-      display: block;
-    }
-
-    .mobile-menu summary {
-      cursor: pointer;
-      list-style: none;
-      font-size: 1.5rem;
-    }
-
-    .mobile-menu summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .mobile-main-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .mobile-language-nav {
-      display: flex;
-      gap: 8px;
-      margin-top: 16px;
-    }
+      .header-bottom {
+          display: none;
+      }
+      .menu-button {
+          display: block;
+      }
   }
 </style>
