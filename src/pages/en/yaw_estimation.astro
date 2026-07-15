@@ -1,13 +1,533 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import WorkInProgress from "../../components/WorkInProgress.astro";
 
-const title = "Yaw Estimation Model Training";
+const title = "Yaw Estimation";
 ---
 
 <Layout title={`${title} | Payload Yaw Control`} lang="en">
-  <section>
+  <article class="detail-page">
     <h1>{title}</h1>
-    <WorkInProgress lang="en" />
-  </section>
+    <p>
+      A payload yaw estimation model was developed and evaluated for use in the control system, where the estimated payload yaw angle is obtained from images.
+    </p>
+    <nav class="page-nav">
+      <div class="page-nav-row">
+        <span>学習:</span>
+        <a href="#workflow">Workflow</a>
+        <a href="#training-data">Training Data</a>
+        <a href="#targets">Detection Targets</a>        
+      </div>
+      <div class="page-nav-row">
+        <span>Yaw Estimation:</span>
+        <a href="#estimation">Yaw Estimation</a>
+        <a href="#evaluation">Accuracy Evaluation</a>
+        <a href="#comparison">Baseline vs Auto</a>
+        <a href="#max-error">Largest Error</a>
+      </div>      
+    </nav>    
+
+    <section id="workflow" class="content-section">
+      <h2>Workflow</h2>
+      <p>
+        Training data were generated from the control evaluation results (CSV files) and used to train the payload yaw estimation model.
+      </p>
+      <figure class="flow-figure">
+        <img
+          src={`${import.meta.env.BASE_URL}/images/yaw_estimation/yaw_model_flow_en.png`}
+          alt="Yaw 角の推定モデルの学習から推論および評価までの流れ"
+        />
+        <figcaption>
+          Workflow of payload yaw estimation model training, estimation, and evaluation.        
+        </figcaption>
+      </figure>
+    </section>
+
+    <section id="training-data" class="content-section">
+      <h2>Training Data</h2>
+      <p>
+        Training images were generated from the downward-facing camera mounted on the controller.
+        Three payload types were captured under various disturbance conditions,
+        and the hook positions were used as the ground truth.      
+      </p>
+      <div class="controller-layout">
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/control.png`}
+            alt="Downward-facing camera mounted on the controller"
+          />
+        </figure>
+        <figcaption>
+        </figcaption>            
+      </div>
+      <p>
+        The training dataset was created from images captured by the downward-facing camera
+        mounted on the controller.      
+      </p>
+      <div class="model-grid">
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/hsteel.png`}
+            alt="HSteel paload"
+          />
+          <figcaption>
+            <span class="figure-title">HSteel (2-point suspension)</span>
+          </figcaption>
+        </figure>
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/plate.png`}
+            alt="Plate payload"
+          />
+          <figcaption>
+            <span class="figure-title">Plate (4-point suspension)</span>
+          </figcaption>
+        </figure>
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/truss.png`}
+            alt="Truss payload"
+          />
+          <figcaption>
+            <span class="figure-title">Truss (4-point suspension)</span>
+          </figcaption>
+        </figure>
+      </div>
+      <p>
+        <strong>
+          Training was performed using two datasets, Baseline and Auto, generated under different conditions.        
+        </strong>
+      </p>      
+    </section>
+
+    <section id="targets" class="content-section">
+      <h2>Detection Targets</h2>
+      <p>
+        The hooks of the HSteel, Plate, and Truss payloads are detected,
+        and the payload yaw angle is calculated from the estimated hook positions.      
+      </p>
+      <div class="model-grid">
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/hsteel_hooks.png`}
+            alt="HSteel payload with detected hooks"
+          />
+          <figcaption>
+            <span class="figure-title">HSteel (2-point suspension)</span>
+          </figcaption>
+        </figure>
+
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/plate_hooks.png`}
+            alt="Plate payload with detected hooks"
+          />
+          <figcaption>
+            <span class="figure-title">Plate (4-point suspension)</span>
+          </figcaption>
+        </figure>
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/truss_hooks.png`}
+            alt="Truss payload with detected hooks"
+          />
+          <figcaption>
+            <span class="figure-title">Truss (4-point suspension)</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="estimation" class="content-section">
+      <h2>Yaw Estimation</h2>
+      <p>
+        The trained model detects the hook positions,
+        and the payload yaw angle is calculated from the detected hook positions.
+        Even when some hooks are not detected,
+        the yaw angle can still be estimated from the remaining detections.      
+      </p>
+      <div class="model-grid">
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/hsteel_yaw.png`}
+            alt="Estimated yaw angle of the HSteel payload"
+          />
+          <figcaption>
+            <span class="figure-title">HSteel (2-point suspension)</span>
+          </figcaption>
+        </figure>
+
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/plate_yaw.png`}
+            alt="Estimated yaw angle of the Plate payload"
+          />
+          <figcaption>
+            <span class="figure-title">Plate (4-point suspension)</span>
+          </figcaption>
+        </figure>
+
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/truss_yaw.png`}
+            alt="Estimated yaw angle of the Truss payload"
+          />
+          <figcaption>
+            <span class="figure-title">Truss (4-point suspension)</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="evaluation" class="content-section">
+      <h2>Accuracy Evaluation</h2>
+      <p>
+        The estimated yaw angle was compared with the ground truth to evaluate estimation accuracy.
+      </p>
+      <div class="evaluation-layout">
+        <figure class="evaluation-result">
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/yaw_eval_summary.png`}
+            alt="Accuracy evaluation of payload yaw estimation"
+          />
+        </figure>
+        <div class="evaluation-description">
+          <div>
+            <p>
+              For the HSteel and Plate payloads, the MAE remained below approximately
+              0.4° even with the Auto dataset, demonstrating high estimation accuracy.            
+            </p>
+            <p>
+              The largest error (2.68°) was observed for the Truss payload under the
+              X1Y1 disturbance condition, which was also the most challenging case in
+              the control evaluation.
+              See <a href="#max-error">Largest Error</a> for details.            
+            </p>
+          </div>
+          <div class="evaluation-notes">
+            <ul>
+              <li><strong>Data</strong>: Baseline vs. Auto</li>
+              <li><strong>Object</strong>: HSteel / Plate / Truss</li>
+              <li><strong>Wind</strong>: X0Y0 / X1Y0 / X1Y1</li>
+              <li><strong>Images</strong>: Number of evaluation images</li>
+              <li><strong>MAE</strong>: Mean Absolute Error</li>
+              <li><strong>RMSE</strong>: Root Mean Square Error</li>
+            </ul>
+            <p class="metric-definition">
+              <small>Unit: degree</small>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="comparison" class="content-section">
+      <h2>Baseline vs Auto</h2>
+      <p>
+        The estimation accuracy was compared between the Baseline and Auto datasets.      
+      </p>
+      <div class="comparison-layout">
+
+        <div class="comparison-left">
+          <figure>
+            <img
+              src={`${import.meta.env.BASE_URL}/images/yaw_estimation/compare_summary.png`}
+              alt="Comparison of estimation accuracy between the Baseline and Auto datasets"
+            />
+          </figure>
+          <p>
+            Most results are distributed close to the 45° line, indicating that the
+            estimation accuracy is nearly identical for the Baseline and Auto datasets.
+            Although the differences appear noticeable in the plot, the absolute
+            errors are all below 1°, demonstrating equivalent estimation performance
+            in practice.          
+          </p>
+
+          <div class="summary-box">
+            The proposed image-based yaw estimation method maintained stable
+            estimation accuracy even under payload oscillation and disturbance
+            conditions.
+          </div>
+        </div>
+
+        <figure class="comparison-right">
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/compare_chart.png`}
+            alt="Scatter plot comparing estimation accuracy for the Baseline and Auto datasets"
+          />
+        </figure>
+      </div>
+    </section>
+
+    <section id="max-error" class="content-section">
+      <h2>Largest Error</h2>
+      <p>
+        The causes of the largest estimation errors were investigated.
+      </p>
+      <p>
+        The largest estimation errors occurred for the Truss payload,
+        where some hooks moved outside the camera view and could not be detected.
+        Even in these cases, temporal processing compensated for the missing detections,
+        so the impact on the control performance was limited.
+      </p>
+      <p>
+          A slight impact was observed only during execution on the
+        <a href={`${import.meta.env.BASE_URL}/en/raspberry_pi/`}>Raspberry Pi</a>.
+      </p>
+      <div class="max-error-grid">
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/error_01.png`}
+            alt="Missing hook detection (Frame 915)"
+          />
+        </figure>
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/error_02.png`}
+            alt="Missing hook detection (Frame 920)"
+          />
+        </figure>
+      </div>
+    </section>
+
+    <nav class="detail-navigation" aria-label="Enviail page navigation">
+      <a href={`${import.meta.env.BASE_URL}/en/control_model/`}>
+        ← Control Model
+      </a>
+      <a href={`${import.meta.env.BASE_URL}/en/raspberry_pi/`}>
+        Raspberry Pi →
+      </a>
+    </nav>
+  </article>
 </Layout>
+
+<style>
+  .detail-page {
+    padding: 32px 0 64px;
+  }
+
+  .detail-page > h1 {
+    margin: 0 0 20px;
+    font-weight: 500;
+  }
+
+  .detail-page > p {
+    margin: 0;
+    line-height: 1.9;
+  }
+
+  .page-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    margin: 32px 0 56px;
+    padding: 16px 0;
+
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .page-nav-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+  }
+
+  .page-nav-row span {
+    font-weight: 600;
+  }
+  .content-section {
+    scroll-margin-top: 32px;
+    margin-bottom: 72px;
+  }
+
+  .content-section h2 {
+    margin: 0 0 20px;
+    font-weight: 500;
+  }
+
+  .content-section > p {
+    margin: 0 0 28px;
+    line-height: 1.9;
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  figcaption {
+    margin-top: 12px;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  .figure-title {
+    display: block;
+    color: #222;
+  }
+
+  .controller-layout figure {
+    width: 50%;
+    margin: 0 auto;
+  }
+
+  .controller-layout img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .flow-figure {
+    max-width: 780px;
+    margin: 24px auto 0;
+  }
+
+  .model-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  .detail-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #ddd;
+  }
+
+  .detail-navigation a {
+    color: inherit;
+  }
+
+  .comparison-layout {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+  }
+
+  .comparison-left {
+    flex: 1;
+  }
+
+  .comparison-right {
+    flex: 1;
+    margin: 0;
+  }
+
+  .comparison-right img,
+  .comparison-left img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .summary-box {
+    margin-top: 24px;
+    padding: 8px 10px;
+    border: 2px solid #999;
+    background: #fafafa;
+  }
+
+
+  @media (max-width: 700px) {
+    .detail-page {
+      padding-top: 24px;
+    }
+
+    .page-nav {
+      margin-bottom: 44px;
+    }
+
+    .content-section {
+      margin-bottom: 56px;
+    }
+
+    .model-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .detail-navigation {
+      flex-direction: column;
+    }
+  }
+
+  .max-error-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+    margin-top: 20px;
+  }
+
+  .max-error-grid figure {
+    margin: 0;
+  }
+
+  .max-error-grid img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .evaluation-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 36px;
+    align-items: start;
+    margin-top: 24px;
+  }
+
+  .evaluation-result {
+    margin: 0;
+  }
+
+  .evaluation-result img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .evaluation-description {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 40px;
+    min-height: 100%;
+  }
+
+  .evaluation-description p {
+    margin-top: 0;
+  }
+
+  .evaluation-notes ul {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+
+  .evaluation-notes li {
+    margin-bottom: 4px;
+  }
+
+  .metric-definition {
+    margin-top: 24px;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 700px) {
+    .evaluation-layout {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .evaluation-description {
+      gap: 24px;
+    }
+  }  
+</style>

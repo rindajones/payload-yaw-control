@@ -1,13 +1,533 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import WorkInProgress from "../../components/WorkInProgress.astro";
 
 const title = "吊り荷 Yaw 角の推定モデル学習";
 ---
 
 <Layout title={`${title} | Payload Yaw Control`} lang="ja">
-    <section>
-      <h1>{title}</h1>
-      <WorkInProgress lang="ja" />
+  <article class="detail-page">
+    <h1>{title}</h1>
+
+    <p>
+      画像から推定した吊り荷のYaw角を制御へ利用することを目的に、推定モデルの構築および精度評価を行う。
+    </p>
+
+    <nav class="page-nav">
+      <div class="page-nav-row">
+        <span>学習:</span>
+        <a href="#workflow">学習の流れ</a>
+        <a href="#training-data">学習データ</a>
+        <a href="#targets">学習対象</a>        
+      </div>
+      <div class="page-nav-row">
+        <span>Yaw 推定:</span>
+        <a href="#estimation">Yaw 角の推定</a>
+        <a href="#evaluation">推定値の評価</a>
+        <a href="#comparison">精度比較</a>
+        <a href="#max-error">最大誤差の原因</a>
+      </div>      
+    </nav>    
+
+    <section id="workflow" class="content-section">
+      <h2>学習から評価までの流れ</h2>
+      <p>
+        制御モデルの評価結果（CSV）から学習データを作成し、画像を用いた吊り荷 Yaw 角推定モデルを学習する。
+      </p>
+      <figure class="flow-figure">
+        <img
+          src={`${import.meta.env.BASE_URL}/images/yaw_estimation/yaw_model_flow_jp.png`}
+          alt="Yaw 角の推定モデルの学習から推論および評価までの流れ"
+        />
+        <figcaption>
+          Yaw 角の推定モデルの学習から推論・評価までの処理構成
+        </figcaption>
+      </figure>
     </section>
-  </Layout>
+
+    <section id="training-data" class="content-section">
+      <h2>学習データ</h2>
+      <p>
+        三種類の吊り荷を、制御装置のカメラで撮影。
+        外乱あり・なしで多様な揺れ方の画像で、フック位置をGT (Ground Truth) とする学習データを生成。
+      </p>
+      <div class="controller-layout">
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/control.png`}
+            alt="制御装置のカメラ"
+          />
+        </figure>
+        <figcaption>
+        </figcaption>            
+      </div>
+      <p>
+        吊り荷の Yaw 角推定モデルを学習するため、制御装置に搭載した真下向きカメラの画像から学習データを作成した。        
+      </p>
+      <div class="model-grid">
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/hsteel.png`}
+            alt="HSteel"
+          />
+          <figcaption>
+            <span class="figure-title">HSteel 2点吊り</span>
+          </figcaption>
+        </figure>
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/plate.png`}
+            alt="Plate"
+          />
+          <figcaption>
+            <span class="figure-title">Plate 4点吊り</span>
+          </figcaption>
+        </figure>
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/truss.png`}
+            alt="Truss"
+          />
+          <figcaption>
+            <span class="figure-title">Truss 4点吊り</span>
+          </figcaption>
+        </figure>
+      </div>
+
+      <p>
+      <strong>
+        学習データには、Baseline と Auto の2種類のデータセットを用いた。これらは異なる条件で生成した画像から構成される。      
+      </strong>
+      </p>
+    </section>
+
+    <section id="targets" class="content-section">
+      <h2>学習対象</h2>
+      <p>
+        HSteel、Plate、Truss の各フックを物体検出し、推定したフック位置から吊り荷の Yaw 角を算出する。
+      </p>
+      <div class="model-grid">
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/hsteel_hooks.png`}
+            alt="HSteel"
+          />
+          <figcaption>
+            <span class="figure-title">HSteel 2点吊り</span>
+          </figcaption>
+        </figure>
+
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/plate_hooks.png`}
+            alt="Plate"
+          />
+          <figcaption>
+            <span class="figure-title">Plate 4点吊り</span>
+          </figcaption>
+        </figure>
+
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/truss_hooks.png`}
+            alt="Truss"
+          />
+          <figcaption>
+            <span class="figure-title">Truss 4点吊り</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="estimation" class="content-section">
+      <h2>Yaw 角の推定</h2>
+      <p>
+        学習済みモデルで検出したフック位置から、画像処理により吊り荷の Yaw 角を推定する。
+        フックが一部欠落した場合でも、残りの検出結果から Yaw 角を算出する。      
+      </p>
+      <div class="model-grid">
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/hsteel_yaw.png`}
+            alt="HSteel"
+          />
+          <figcaption>
+            <span class="figure-title">HSteel 2点吊り</span>
+          </figcaption>
+        </figure>
+
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/plate_yaw.png`}
+            alt="Plate"
+          />
+          <figcaption>
+            <span class="figure-title">Plate 4点吊り</span>
+          </figcaption>
+        </figure>
+
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/truss_yaw.png`}
+            alt="Truss"
+          />
+          <figcaption>
+            <span class="figure-title">Truss 4点吊り</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="evaluation" class="content-section">
+      <h2>推定値の評価</h2>
+      <p>
+        Ground Truth（正解の Yaw 角）と推定値を比較して精度を評価した。
+      </p>
+      <div class="evaluation-layout">
+        <figure class="evaluation-result">
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/yaw_eval_summary.png`}
+            alt="吊り荷 Yaw 角の推定精度評価結果"
+          />
+        </figure>
+
+        <div class="evaluation-description">
+          <div>
+            <p>
+              HSteel および Plate は、Auto による推定でも MAE は概ね 0.4° 以下となり、高い推定精度を確認した。
+            </p>
+            <p>
+              特に Truss / X1Y1 条件では最大誤差が 2.68° となり、
+              後述する制御評価でも同条件が最も難しいケースとなった。
+              誤差の要因は<a href="#max-error">「最大誤差の原因」</a>を参照。
+            </p>
+          </div>
+
+          <div class="evaluation-notes">
+            <ul>
+              <li><strong>Data</strong>: Baseline と Auto の比較</li>
+              <li><strong>Object</strong>: HSteel / Plate / Truss の比較</li>
+              <li><strong>Wind</strong>: X0Y0 / X1Y0 / X1Y1 の比較</li>
+              <li><strong>Images</strong>: 評価サンプル数</li>
+              <li><strong>MAE</strong>: 平均的な推定誤差</li>
+              <li><strong>RMSE</strong>: 大きな誤差も考慮した指標</li>
+            </ul>
+
+            <p class="metric-definition">
+            <small>
+              MAE: Mean Absolute Error<br />
+              RMSE: Root Mean Square Error<br />
+              単位: degree
+              </small>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="comparison" class="content-section">
+      <h2>Baseline と Auto の精度比較</h2>
+
+      <div class="comparison-layout">
+
+        <div class="comparison-left">
+          <figure>
+            <img
+              src={`${import.meta.env.BASE_URL}/images/yaw_estimation/compare_summary.png`}
+              alt="Baseline と Auto の比較表"
+            />
+          </figure>
+          <p>
+            全体では45°線付近に分布しており、Baseline と Auto の推定精度は概ね同等である。
+            もともと誤差が非常に小さいため、差は見かけ上大きく見えるが、
+            絶対誤差としてはいずれも 1° 未満であり、実用上は同等の推定精度と判断できる。
+          </p>
+
+          <div class="summary-box">
+            よって、本調査で用いた画像ベースの Yaw 推定手法は、
+            吊り荷の姿勢変化や揺れに対しても安定した推定性能を維持できることを確認した。
+          </div>
+        </div>
+
+        <figure class="comparison-right">
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/compare_chart.png`}
+            alt="Baseline と Auto の精度比較"
+          />
+        </figure>
+
+      </div>
+    </section>
+
+    <section id="max-error" class="content-section">
+      <h2>最大誤差の原因</h2>
+
+      <p>
+        最大誤差が 2.0° 以上となったのは、Truss の吊り荷で、
+        下図のようにフックを検知できない状態の3枚である。
+        残りの1枚も同様の状態であった。
+        フックを検知できない場合も、時系列処理によって補正しているため、
+        制御への影響は大きくないと考えられる。
+      </p>
+      <p>        
+        多少の影響が見られたのは 
+         <a href={`${import.meta.env.BASE_URL}/ja/raspberry_pi/`}>Raspberry Pi 環境</a>
+         での実行時である。
+      </p>
+      <div class="max-error-grid">
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/error_01.png`}
+            alt="Frame 915 におけるフックの検知欠落"
+          />
+        </figure>
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/yaw_estimation/error_02.png`}
+            alt="Frame 920 におけるフックの検知欠落"
+          />
+        </figure>
+      </div>
+    </section>
+
+    <nav class="detail-navigation" aria-label="詳細ページの移動">
+      <a href={`${import.meta.env.BASE_URL}/ja/control_model/`}>
+        ← 制御モデル学習
+      </a>
+      <a href={`${import.meta.env.BASE_URL}/ja/raspberry_pi/`}>
+        Raspberry Pi 環境 →
+      </a>
+    </nav>
+  </article>
+</Layout>
+
+<style>
+  .detail-page {
+    padding: 32px 0 64px;
+  }
+
+  .detail-page > h1 {
+    margin: 0 0 20px;
+    font-weight: 500;
+  }
+
+  .detail-page > p {
+    margin: 0;
+    line-height: 1.9;
+  }
+
+  .page-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    margin: 32px 0 56px;
+    padding: 16px 0;
+
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .page-nav-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+  }
+
+  .page-nav-row span {
+    font-weight: 600;
+  }
+  .content-section {
+    scroll-margin-top: 32px;
+    margin-bottom: 72px;
+  }
+
+  .content-section h2 {
+    margin: 0 0 20px;
+    font-weight: 500;
+  }
+
+  .content-section > p {
+    margin: 0 0 28px;
+    line-height: 1.9;
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  figcaption {
+    margin-top: 12px;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  .figure-title {
+    display: block;
+    color: #222;
+  }
+
+  .controller-layout figure {
+    width: 50%;
+    margin: 0 auto;
+  }
+
+  .controller-layout img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .flow-figure {
+    max-width: 780px;
+    margin: 24px auto 0;
+  }
+
+  .model-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  .detail-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #ddd;
+  }
+
+  .detail-navigation a {
+    color: inherit;
+  }
+
+  .comparison-layout {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+  }
+
+  .comparison-left {
+    flex: 1;
+  }
+
+  .comparison-right {
+    flex: 1;
+    margin: 0;
+  }
+
+  .comparison-right img,
+  .comparison-left img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .summary-box {
+    margin-top: 24px;
+    padding: 8px 10px;
+    border: 2px solid #999;
+    background: #fafafa;
+  }
+
+
+  @media (max-width: 700px) {
+    .detail-page {
+      padding-top: 24px;
+    }
+
+    .page-nav {
+      margin-bottom: 44px;
+    }
+
+    .content-section {
+      margin-bottom: 56px;
+    }
+
+    .model-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .detail-navigation {
+      flex-direction: column;
+    }
+  }
+
+  .max-error-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+    margin-top: 20px;
+  }
+
+  .max-error-grid figure {
+    margin: 0;
+  }
+
+  .max-error-grid img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .evaluation-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 36px;
+    align-items: start;
+    margin-top: 24px;
+  }
+
+  .evaluation-result {
+    margin: 0;
+  }
+
+  .evaluation-result img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .evaluation-description {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 40px;
+    min-height: 100%;
+  }
+
+  .evaluation-description p {
+    margin-top: 0;
+  }
+
+  .evaluation-notes ul {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+
+  .evaluation-notes li {
+    margin-bottom: 4px;
+  }
+
+  .metric-definition {
+    margin-top: 24px;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 700px) {
+    .evaluation-layout {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .evaluation-description {
+      gap: 24px;
+    }
+  }  
+</style>
