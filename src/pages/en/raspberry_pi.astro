@@ -1,9 +1,17 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 const title = "Vision-Based Control";
+const base = import.meta.env.BASE_URL;
 ---
 
-<Layout title={`${title} | Payload Yaw Control`} lang="en">
+<Layout
+  title={`${title} | Payload Yaw Control`}
+  lang="en"
+  prevHref={`${base}/en/yaw_estimation/`}
+  prevLabel="Yaw Estimation"
+  nextHref={`${base}/en/`}
+  nextLabel="Top"
+>
   <article class="detail-page">
     <h1>{title}</h1>
     <p>
@@ -283,15 +291,6 @@ const title = "Vision-Based Control";
         Yaw angle but ultimately achieved stable control.
       </div>
     </section>
-
-    <nav class="detail-navigation" aria-label="Detail page navigation">
-      <a href={`${import.meta.env.BASE_URL}/en/yaw_estimation/`}>
-        ← Yaw Estimation
-      </a>
-      <a href={`${import.meta.env.BASE_URL}/en/`}>
-        Top →
-      </a>
-    </nav>
   </article>
 </Layout>
 
@@ -332,7 +331,7 @@ const title = "Vision-Based Control";
 
   .content-section {
     scroll-margin-top: 32px;
-    margin-bottom: 72px;
+    margin-bottom: 62px;
   }
 
   .content-section h2 {

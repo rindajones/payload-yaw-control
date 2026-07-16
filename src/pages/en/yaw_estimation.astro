@@ -2,9 +2,17 @@
 import Layout from "../../layouts/Layout.astro";
 
 const title = "Yaw Estimation";
+const base = import.meta.env.BASE_URL;
 ---
 
-<Layout title={`${title} | Payload Yaw Control`} lang="en">
+<Layout
+  title={`${title} | Yaw Estimation`}
+  lang="en"
+  prevHref={`${base}/en/control_model/`}
+  prevLabel="Control Model"
+  nextHref={`${base}/en/raspberry_pi`}
+  nextLabel="Vision-Based Control"
+>
   <article class="detail-page">
     <h1>{title}</h1>
     <p>
@@ -288,15 +296,6 @@ const title = "Yaw Estimation";
         </figure>
       </div>
     </section>
-
-    <nav class="detail-navigation" aria-label="Enviail page navigation">
-      <a href={`${import.meta.env.BASE_URL}/en/control_model/`}>
-        ← Control Model
-      </a>
-      <a href={`${import.meta.env.BASE_URL}/en/raspberry_pi/`}>
-        Vision-Based Control →
-      </a>
-    </nav>
   </article>
 </Layout>
 
@@ -338,7 +337,7 @@ const title = "Yaw Estimation";
   }
   .content-section {
     scroll-margin-top: 32px;
-    margin-bottom: 72px;
+    margin-bottom: 62px;
   }
 
   .content-section h2 {

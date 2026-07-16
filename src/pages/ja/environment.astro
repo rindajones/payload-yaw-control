@@ -1,10 +1,18 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 
-const title = "吊り荷の制御環境の構築";
+const title = "制御環境の構築";
+const base = import.meta.env.BASE_URL;
 ---
 
-<Layout title={`${title} | Payload Yaw Control`} lang="ja">
+<Layout
+  title={`${title} | 制御環境`}
+  lang="ja"
+  prevHref={`${base}/ja/overview/`}
+  prevLabel="概要"
+  nextHref={`${base}/ja/control_model`}
+  nextLabel="制御モデル学習"
+>
   <article class="detail-page">
 
     <h1>{title}</h1>
@@ -225,16 +233,6 @@ const title = "吊り荷の制御環境の構築";
         </figure>
       </div>
     </section>
-
-    <nav class="detail-navigation" aria-label="詳細ページの移動">
-      <a href={`${import.meta.env.BASE_URL}/ja/overview/`}>
-        ← 概要へ戻る
-      </a>
-      <a href={`${import.meta.env.BASE_URL}/ja/control_model/`}>
-          制御モデル学習 →
-      </a>
-
-    </nav>
   </article>
 </Layout>
 
@@ -273,7 +271,7 @@ const title = "吊り荷の制御環境の構築";
 
   .content-section {
     scroll-margin-top: 32px;
-    margin-bottom: 72px;
+    margin-bottom: 62px;
   }
 
   .content-section h2 {

@@ -2,9 +2,17 @@
 import Layout from "../../layouts/Layout.astro";
 
 const title = "Payload Control Environment";
+const base = import.meta.env.BASE_URL;
 ---
 
-<Layout title={`${title} | Payload Yaw Control`} lang="en">
+<Layout
+  title={`${title} | Payload Yaw Control`}
+  lang="en"
+  prevHref={`${base}/en/overview/`}
+  prevLabel="Overview"
+  nextHref={`${base}/en/control_model`}
+  nextLabel="Control Model"
+>
   <article class="detail-page">
     <h1>{title}</h1>
     <p>
@@ -242,22 +250,16 @@ const title = "Payload Control Environment";
         </figure>
       </div>
     </section>
-
-    <nav class="detail-navigation" aria-label="Detail page navigation">
-      <a href={`${import.meta.env.BASE_URL}/en/overview/`}>
-        ← Overview
-      </a>
-      <a href={`${import.meta.env.BASE_URL}/en/control_model/`}>
-          Control Model →
-      </a>
-
-    </nav>
   </article>
 </Layout>
 
 <style>
   .detail-page {
     padding: 32px 0 64px;
+  }
+  .detail-page > h1 {
+    margin: 0 0 20px;
+    font-weight: 500;
   }
 
   .page-header {
@@ -295,7 +297,7 @@ const title = "Payload Control Environment";
 
   .content-section {
     scroll-margin-top: 32px;
-    margin-bottom: 72px;
+    margin-bottom: 62px;
   }
 
   .content-section h2 {

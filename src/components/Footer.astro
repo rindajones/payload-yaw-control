@@ -1,26 +1,121 @@
 ---
 interface Props {
   lang: "ja" | "en";
+  prevHref?: string;
+  prevLabel?: string;
+  nextHref?: string;
+  nextLabel?: string;
 }
 
-const { lang } = Astro.props;
+const {
+  lang,
+  prevHref,
+  prevLabel,
+  nextHref,
+  nextLabel,
+} = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 const labels = {
-  ja: "お問い合わせ",
-  en: "Contact",
+  ja: {
+    contact: "お問い合わせ",
+    navigation: "詳細ページの移動",
+  },
+  en: {
+    contact: "Contact",
+    navigation: "Detail page navigation",
+  },
 };
 ---
 
 <footer>
-  <div class="container">
-    <p>© 2026 Hidekazu Hayashida</p>
+  <div class="footer-inner">
+    {(prevHref || nextHref) && (
+      <nav
+        class="page-navigation"
+        aria-label={labels[lang].navigation}
+      >
+        <div>
+          {prevHref && prevLabel && (
+            <a href={prevHref}>← {prevLabel}</a>
+          )}
+        </div>
 
-    <nav>
-      <a href={`${base}/${lang}/contact/`}>
-        {labels[lang]}
-      </a>
-    </nav>
+        <div>
+          {nextHref && nextLabel && (
+            <a href={nextHref}>{nextLabel} →</a>
+          )}
+        </div>
+      </nav>
+    )}
+
+    <div class="footer-content">
+      <p>© 2026 Hidekazu Hayashida</p>
+      <nav>
+        <a href={`${base}/${lang}/contact/`}>
+          {labels[lang].contact}
+        </a>
+      </nav>
+    </div>
   </div>
 </footer>
+
+<style>
+footer {
+  padding: 10px 40px 24px;
+}
+
+.footer-inner {
+  width: min(100% - 40px, 1100px);
+  margin: 0 auto;
+}
+
+.page-navigation {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 10px;
+}
+
+.page-navigation > div {
+  flex: 1;
+}
+
+.page-navigation > div:last-child {
+  text-align: right;
+}
+
+.page-navigation a {
+  color: inherit;
+  font-size: 1.2rem;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.footer-content p {
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  .footer-inner {
+    width: min(100% - 32px, 1100px);
+  }
+
+  .page-navigation,
+  .footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .page-navigation > div:last-child {
+    text-align: left;
+  }
+}
+
+</style>

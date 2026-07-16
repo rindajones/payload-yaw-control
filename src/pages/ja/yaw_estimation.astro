@@ -1,10 +1,18 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 
-const title = "吊り荷 Yaw 角の推定モデル学習";
+const title = "Yaw角の推定モデル学習";
+const base = import.meta.env.BASE_URL;
 ---
 
-<Layout title={`${title} | Payload Yaw Control`} lang="ja">
+<Layout
+  title={`${title} | Payload Yaw Control`}
+  lang="ja"
+  prevHref={`${base}/ja/control_model/`}
+  prevLabel="制御モデル学習"
+  nextHref={`${base}/ja/raspberry_pi`}
+  nextLabel="画像ベース制御"
+>
   <article class="detail-page">
     <h1>{title}</h1>
 
@@ -287,15 +295,6 @@ const title = "吊り荷 Yaw 角の推定モデル学習";
         </figure>
       </div>
     </section>
-
-    <nav class="detail-navigation" aria-label="詳細ページの移動">
-      <a href={`${import.meta.env.BASE_URL}/ja/control_model/`}>
-        ← 制御モデル学習
-      </a>
-      <a href={`${import.meta.env.BASE_URL}/ja/raspberry_pi/`}>
-        画像ベース制御 →
-      </a>
-    </nav>
   </article>
 </Layout>
 
@@ -337,7 +336,7 @@ const title = "吊り荷 Yaw 角の推定モデル学習";
   }
   .content-section {
     scroll-margin-top: 32px;
-    margin-bottom: 72px;
+    margin-bottom: 62px;
   }
 
   .content-section h2 {

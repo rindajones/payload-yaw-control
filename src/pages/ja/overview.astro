@@ -1,9 +1,18 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import OverviewFlow from "../../components/OverviewFlow.astro";
+const title = "概要";
+const base = import.meta.env.BASE_URL;
 ---
 
-<Layout title="概要 | 吊り荷 Yaw 制御" lang="ja">
+<Layout
+  title={`${title} | 概要`}
+  lang="ja"
+  prevHref={`${base}/ja/`}
+  prevLabel="トップ"
+  nextHref={`${base}/ja/environment`}
+  nextLabel="制御環境の構築"
+>
     <main class="overview-page">
         <section class="overview-intro">
             <h1>概要</h1>

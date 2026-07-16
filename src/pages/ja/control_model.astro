@@ -1,18 +1,24 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 
-const title = "吊り荷の制御モデルの学習";
+const title = "制御モデルの学習";
+const base = import.meta.env.BASE_URL;
 ---
 
-<Layout title={`${title} | Payload Yaw Control`} lang="ja">
+<Layout
+  title={`${title} | 制御モデル学習`}
+  lang="ja"
+  prevHref={`${base}/ja/environment/`}
+  prevLabel="制御モデル学習"
+  nextHref={`${base}/ja/yaw_estimation`}
+  nextLabel="Yaw角の推定"
+>
   <article class="detail-page">
     <h1>{title}</h1>
-
     <p>
       物理エンジン上に構築した制御環境を用いて強化学習を行い、
       吊り荷を目標 Yaw 角へ制御する学習済みモデルを作成しました。
     </p>
-
     <nav class="page-nav">
       <div class="page-nav-row">
         <a href="#flow">学習の流れ</a>
@@ -491,16 +497,6 @@ const title = "吊り荷の制御モデルの学習";
         </article>
       </div>
     </section>
-
-    <nav class="detail-navigation" aria-label="詳細ページの移動">
-      <a href={`${import.meta.env.BASE_URL}/ja/environment/`}>
-        ← 制御環境
-      </a>
-
-      <a href={`${import.meta.env.BASE_URL}/ja/yaw_estimation/`}>
-        Yaw角の推定 →
-      </a>
-    </nav>
   </article>
 </Layout>
 
@@ -542,7 +538,7 @@ const title = "吊り荷の制御モデルの学習";
   }
   .content-section {
     scroll-margin-top: 32px;
-    margin-bottom: 72px;
+    margin-bottom: 62px;
   }
 
   .content-section h2 {
