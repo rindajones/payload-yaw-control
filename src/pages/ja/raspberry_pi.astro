@@ -1,13 +1,529 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import WorkInProgress from "../../components/WorkInProgress.astro";
-
-const title = "Raspberry Pi 環境での制御実証";
+const title = "画像ベース制御";
 ---
 
 <Layout title={`${title} | Payload Yaw Control`} lang="ja">
-  <section>
+  <article class="detail-page">
     <h1>{title}</h1>
-    <WorkInProgress lang="ja" />
-  </section>
+    <p>
+      Yaw 角推定モデルと吊り荷 Yaw 制御モデルを結合し、
+      Raspberry Pi 上で画像ベースの吊り荷 Yaw 制御システムを実証する。
+      さらに、開発環境との制御結果を比較する。
+    </p>
+    <nav class="page-nav" aria-label="ページ内ナビゲーション">
+      <div class="page-nav-row">
+        <span>実行環境:</span>
+        <a href="#environment">Raspberry Pi 実行環境</a>
+        <a href="#system">システム構成</a>
+      </div>
+      <div class="page-nav-row">
+        <span>制御結果:</span>
+        <a href="#result-overview">評価方法</a>
+        <a href="#hsteel">HSteel</a>
+        <a href="#plate">Plate</a>
+        <a href="#truss">Truss</a>
+      </div>
+    </nav>
+
+    <section id="environment" class="content-section">
+      <h2>Raspberry Pi 実行環境</h2>
+      <p>
+        Raspberry Pi を制御装置として使用した。
+        制御入力となるカメラ画像は Linux 端末上の 3D シミュレーションで生成し、
+        Raspberry Pi から送信された制御結果を反映して描画を更新する。
+      </p>
+      <div class="environment-grid">
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/raspberry_pi/raspberry_pi.jpg`}
+            alt="制御装置として使用した Raspberry Pi"
+          />
+          <figcaption>
+            <span class="figure-title">Raspberry Pi</span>
+            Yaw 角推定モデルおよび吊り荷 Yaw 制御モデルを実行
+          </figcaption>
+        </figure>
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/raspberry_pi/environment.jpg`}
+            alt="Raspberry Pi と3Dシミュレーターを接続した実行環境"
+          />
+          <figcaption>
+            <span class="figure-title">実行環境</span>
+            Raspberry Pi と 3D シミュレーターを Wi-Fi 通信で接続
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="system" class="content-section">
+      <h2>システム構成</h2>
+      <p>
+        3D 描画を除く推論および制御処理を、すべて Raspberry Pi 上で実行した。      
+      </p>
+      <figure class="system-figure">
+        <img
+          src={`${import.meta.env.BASE_URL}/images/raspberry_pi/system_flow_ja.png`}
+          alt="3Dシミュレーターと Raspberry Pi による吊り荷 Yaw 制御システムの構成"
+        />
+        <figcaption>
+          3D シミュレーターと Raspberry Pi 間の通信および制御処理の構成
+        </figcaption>
+      </figure>
+      <div class="system-description">
+        <div>
+          <h3>3D シミュレーター</h3>
+          <p>
+            Yaw 角推定の入力となる吊り荷画像を生成し、Raspberry Pi へ送信する。
+            Raspberry Pi から受信した制御結果を反映してシーンを更新し、次のカメラ画像を描画する。
+          </p>
+        </div>
+        <div>
+          <h3>Raspberry Pi</h3>
+          <p>
+            入力画像から吊り荷の Yaw 角を推定し、観測値を吊り荷 Yaw 制御モデルへ入力する。
+            制御モデルが出力した 4 基のスラスター操作量を
+            3D シミュレーターへ送信する。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="result-overview" class="content-section">
+      <h2>評価方法</h2>
+      <p>
+        最も外乱の大きい X1Y1 条件で、HSteel、Plate、Truss の制御を実行した。
+        開発環境と Raspberry Pi 環境における吊り荷 Yaw 角および
+        スラスター出力の傾向を比較する。
+      </p>
+      <div class="chart-guide">
+        <div>
+          <span class="chart-guide-title">Baseline</span>
+          <p>制御を行わない場合の吊り荷 Yaw 角</p>
+        </div>
+
+        <div>
+          <span class="chart-guide-title">Control</span>
+          <p>制御時の吊り荷 Yaw 角と目標角度 90°</p>
+        </div>
+        <div>
+          <span class="chart-guide-title">Thruster force heatmap</span>
+          <p>4 基のスラスター出力。明るいほど出力が大きい。</p>
+        </div>
+        <div>
+          <span class="chart-guide-title">Animation</span>
+          <p>制御中の吊り荷姿勢をアニメーションで目視確認。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="hsteel" class="content-section result-section">
+      <h2>HSteel</h2>
+      <p>
+        HSteel の吊り荷制御を実行した。
+        Raspberry Pi 環境でも制御開始後約10秒で目標姿勢へ到達し、その後は 90° 付近を維持した。
+      </p>
+      <div class="result-grid">
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/raspberry_pi/HSteel_X1Y1.png`}
+            alt="開発環境における HSteel X1Y1 の制御結果"
+          />
+          <figcaption>
+            <span class="figure-title">開発環境</span>
+          </figcaption>
+        </figure>
+        <figure class="raspberry-result">
+          <img
+            src={`${import.meta.env.BASE_URL}/images/raspberry_pi/HSteel_Pi.png`}
+            alt="Raspberry Pi 環境における HSteel X1Y1 の制御結果"
+          />
+          <figcaption>
+            <span class="figure-title">Raspberry Pi 環境</span>
+          </figcaption>
+        </figure>
+      </div>
+      <div class="result-summary">
+        開発環境とほぼ同等の目標到達時間およびスラスター出力傾向を確認した。
+      </div>
+      <div class="hero-video">
+        <video controls muted playsinline preload="metadata">
+          <source
+            src={`${import.meta.env.BASE_URL}/videos/runtime_HSteel_0001-1800.mp4`}
+            type="video/mp4"
+          />
+          お使いのブラウザは動画再生に対応していません。
+        </video>
+      </div>	        
+    </section>
+
+    <section id="plate" class="content-section result-section">
+      <h2>Plate</h2>
+      <p>
+        Plate の吊り荷制御を実行した。
+        Raspberry Pi 環境でも約13秒で目標姿勢へ到達し、その後は 90° 付近を維持した。
+      </p>
+      <div class="result-grid">
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/raspberry_pi/Plate_X1Y1.png`}
+            alt="開発環境における Plate X1Y1 の制御結果"
+          />
+          <figcaption>
+            <span class="figure-title">開発環境</span>
+          </figcaption>
+        </figure>
+        <figure class="raspberry-result">
+          <img
+            src={`${import.meta.env.BASE_URL}/images/raspberry_pi/Plate_Pi.png`}
+            alt="Raspberry Pi 環境における Plate X1Y1 の制御結果"
+          />
+          <figcaption>
+            <span class="figure-title">Raspberry Pi 環境</span>
+          </figcaption>
+        </figure>
+      </div>
+      <div class="result-summary">
+        開発環境とほぼ同等の目標到達時間およびスラスター出力傾向を確認した。
+      </div>
+      <div class="hero-video">
+        <video controls muted playsinline preload="metadata">
+          <source
+            src={`${import.meta.env.BASE_URL}/videos/runtime_Plate_0001-1800.mp4`}
+            type="video/mp4"
+          />
+          お使いのブラウザは動画再生に対応していません。
+        </video>
+      </div>	        
+    </section>
+
+    <section id="truss" class="content-section result-section">
+      <h2>Truss</h2>
+      <p>
+        Truss の吊り荷制御を実行した。
+        Raspberry Pi 環境では開発環境より目標角度への到達が遅れ、60 秒付近で目標 Yaw 角へ到達した。        
+        ただし、最終的には目標角度へ到達し、その姿勢を維持した。
+      </p>
+
+      <div class="result-grid">
+        <figure>
+          <img
+            src={`${import.meta.env.BASE_URL}/images/raspberry_pi/Truss_X1Y1.png`}
+            alt="開発環境における Truss X1Y1 の制御結果"
+          />
+          <figcaption>
+            <span class="figure-title">開発環境</span>
+          </figcaption>
+        </figure>
+        <figure class="raspberry-result">
+          <img
+            src={`${import.meta.env.BASE_URL}/images/raspberry_pi/Truss_Pi.png`}
+            alt="Raspberry Pi 環境における Truss X1Y1 の制御結果"
+          />
+          <figcaption>
+            <span class="figure-title">Raspberry Pi 環境</span>
+          </figcaption>
+        </figure>
+      </div>
+      <div class="truss-notes">
+        <p>
+          開発環境と似たスラスター出力傾向が見られるが、
+          目標 Yaw 角への到達に遅れが生じた。
+        </p>
+        <p>
+          この違いは、吊り荷 Yaw 角の推定誤差の影響によるものと考えられる。
+          <a href={`${import.meta.env.BASE_URL}/ja/yaw_estimation/#max-error`}>
+          Truss / X1Y1 は Yaw 角推定の最大誤差が最も大きい</a>条件であり、
+          推定値のわずかな違いによって制御モデルの出力が変化した。
+        </p>
+      </div>
+      <div class="result-summary">
+        Truss では到達時間に差が見られたが、
+        Raspberry Pi 環境でも最終的に目標 Yaw 角へ到達し、
+        吊り荷姿勢を維持できることを確認した。
+      </div>
+      <div class="hero-video">
+        <video controls muted playsinline preload="metadata">
+          <source
+            src={`${import.meta.env.BASE_URL}/videos/runtime_Truss_0001-1800.mp4`}
+            type="video/mp4"
+          />
+          お使いのブラウザは動画再生に対応していません。
+        </video>
+      </div>	        
+    </section>
+
+    <section class="content-section conclusion-section">
+      <h2>評価結果</h2>
+      <div class="summary-box">
+        Yaw 角推定モデルと吊り荷 Yaw 制御モデルを結合したシステムを
+        Raspberry Pi 上で実行し、HSteel、Plate、Truss のすべてで
+        目標 Yaw 角への制御を確認した。
+        HSteel と Plate は開発環境とほぼ同等の結果となり、
+        Truss は到達時間に差が見られたものの、
+        最終的には目標姿勢へ到達した。
+      </div>
+    </section>
+    <nav class="detail-navigation" aria-label="詳細ページの移動">
+      <a href={`${import.meta.env.BASE_URL}/ja/yaw_estimation/`}>
+        ← Yaw 角の推定
+      </a>
+      <a href={`${import.meta.env.BASE_URL}/ja/`}>
+        トップへ →
+      </a>
+    </nav>
+  </article>
 </Layout>
+
+<style>
+  .detail-page {
+    padding: 32px 0 64px;
+  }
+
+  .detail-page > h1 {
+    margin: 0 0 20px;
+    font-weight: 500;
+  }
+
+  .detail-page > p {
+    margin: 0;
+    line-height: 1.9;
+  }
+
+  .page-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 32px 0 56px;
+    padding: 16px 0;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .page-nav-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+  }
+
+  .page-nav-row span {
+    font-weight: 600;
+  }
+
+  .content-section {
+    scroll-margin-top: 32px;
+    margin-bottom: 72px;
+  }
+
+  .content-section h2 {
+    margin: 0 0 20px;
+    font-weight: 500;
+  }
+
+  .content-section h3 {
+    margin: 0 0 10px;
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+
+  .content-section > p {
+    margin: 0 0 28px;
+    line-height: 1.9;
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  figcaption {
+    margin-top: 12px;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  .figure-title {
+    display: block;
+    color: #222;
+  }
+
+  .environment-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+    margin-top: 28px;
+    align-items: start;
+  }
+
+  .environment-grid img {
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+  }
+
+  .system-figure {
+    max-width: 920px;
+    margin: 28px auto 0;
+  }
+
+  .system-description {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px;
+    margin-top: 32px;
+  }
+
+  .system-description p {
+    margin: 0;
+    line-height: 1.9;
+  }
+
+  .chart-guide {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .chart-guide > div {
+    padding: 16px 20px;
+  }
+
+  .chart-guide > div + div {
+    border-left: 1px solid #ddd;
+  }
+
+  .chart-guide-title {
+    font-weight: 600;
+  }
+
+  .chart-guide p {
+    margin: 6px 0 0;
+    line-height: 1.7;
+  }
+
+  .result-section {
+    padding-top: 4px;
+  }
+
+  .result-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px;
+    align-items: start;
+  }
+
+  .raspberry-result {
+    padding: 10px;
+    border: 2px solid #e98524;
+  }
+
+  .raspberry-result figcaption {
+    margin-bottom: 2px;
+  }
+
+  .result-summary {
+    margin-top: 28px;
+    padding: 12px 14px;
+    border-left: 4px solid #e98524;
+    background: #fafafa;
+    line-height: 1.8;
+  }
+
+  .truss-notes {
+    margin-top: 28px;
+  }
+
+  .truss-notes p {
+    margin: 0 0 14px;
+    line-height: 1.9;
+  }
+
+  .summary-box {
+    padding: 14px 16px;
+    border: 2px solid #999;
+    background: #fafafa;
+    line-height: 1.9;
+  }
+
+  .detail-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #ddd;
+  }
+
+  .detail-navigation a {
+    color: inherit;
+  }
+
+  .hero-video {
+    width: 90%;
+    max-width: 1100px;
+    margin: 20px auto;
+    border: none;
+    outline: none;
+    box-shadow: none;
+  }
+
+  .hero-video video {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+
+  @media (max-width: 700px) {
+    .detail-page {
+      padding-top: 24px;
+    }
+
+    .page-nav {
+      margin-bottom: 44px;
+    }
+
+    .content-section {
+      margin-bottom: 56px;
+    }
+
+    .environment-grid,
+    .system-description,
+    .result-grid,
+    .chart-guide {
+      grid-template-columns: 1fr;
+    }
+
+    .environment-grid {
+      gap: 36px;
+    }
+
+    .environment-grid img {
+      aspect-ratio: auto;
+      object-fit: contain;
+    }
+
+    .chart-guide > div + div {
+      border-left: 0;
+      border-top: 1px solid #ddd;
+    }
+
+    .result-grid {
+      gap: 28px;
+    }
+
+    .detail-navigation {
+      flex-direction: column;
+    }
+
+    .hero-video {
+      width: 100%;
+      margin-top: 28px;
+    }    
+  }
+</style>
