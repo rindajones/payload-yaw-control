@@ -24,40 +24,44 @@ const base = import.meta.env.BASE_URL;
       </p>
 
 
-      <div class="hero-video">
-  	  <video controls muted playsinline preload="metadata">
-		<source
-		src={`${base}/videos/Truss_0001-1900.mp4`}
-		type="video/mp4"
-		/>
-		お使いのブラウザは動画再生に対応していません。
-	  </video>
-	  </div>	  
+		<div class="hero-video">
+		<video controls muted playsinline preload="metadata">
+			<source
+			src={`${base}/videos/With_Without_Control-Raspberry_Pi.mp4`}
+			type="video/mp4"
+			/>
+			お使いのブラウザは動画再生に対応していません。
+		</video>
+
+		<p class="hero-caption">
+			本動画では、カメラ画像から推定した吊り荷の Yaw 角を用いて、
+			Raspberry Pi 上で学習済み制御モデルをリアルタイム実行しています。
+			左は制御あり、右は同一条件でスラスターを使用しない場合を示しています。
+		</p>
+		</div>
 
     </section>
-
-	<section id="overview" class="overview">
-	<p>
-		本システムは、吊り荷を目標 Yaw 角へ自動で回転させ、
-		外乱がある状態でも目標姿勢を維持することを目的としています。
-	</p>
-
-	<p>
-		吊り荷の向きは制御装置に搭載したカメラ画像から推定し、
-		推定したYaw角を用いて4基のスラスターを制御します。
-	</p>
-
-	<p>
-		制御モデルと画像姿勢推定を組み合わせ、
-		Raspberry Pi 上で 3Hz の制御を実行しました。
-	</p>
-
-    <p class="notice">
-	本サイトは開発状況に合わせて随時更新しています。
-	</p>
-	</section>
-
 
   </main>
 
 </Layout>
+
+<style>
+  .hero-video {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-video video {
+    width: 100%;
+    display: block;
+  }
+
+  .hero-caption {
+    width: min(100%, 760px);
+    margin: 12px auto 0;
+    text-align: left;
+    line-height: 1.7;
+    color: #555;
+  }
+</style>

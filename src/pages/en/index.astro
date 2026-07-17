@@ -26,47 +26,42 @@ const base = import.meta.env.BASE_URL;
             using four thrusters.
         </p>
 
-      <div class="hero-video">
-  	  <video controls muted playsinline preload="metadata">
-		<source
-		src={`${base}/videos/Truss_0001-1900.mp4`}
-		type="video/mp4"
-		/>
-        Your browser does not support HTML5 video.
-	  </video>
-	  </div>	  
+        <div class="hero-video">
+        <video controls muted playsinline preload="metadata">
+          <source
+          src={`${base}/videos/With_Without_Control-Raspberry_Pi.mp4`}
+          type="video/mp4"
+          />
+          お使いのブラウザは動画再生に対応していません。
+        </video>
 
-    </section>
-
-	<section id="overview" class="overview">
-    <p>
-    This project demonstrates an image-based yaw control system
-    for suspended payloads.
-    The objective is to rotate the payload to a target yaw angle
-    and maintain its orientation under external disturbances.
-    </p>
-
-    <p>
-    Payload orientation is estimated directly from camera images
-    mounted on the control unit.
-    The estimated yaw angle is then used to control
-    four thrusters in real time.
-    </p>
-
-    <p>
-    The complete control pipeline,
-    including image-based pose estimation,
-    reinforcement learning,
-    and onboard inference,
-    was successfully demonstrated on
-    Raspberry Pi at a control frequency of 3 Hz.
-    </p>
-
-    <p class="notice">
-    This website is continuously updated as the project evolves.
-    </p>
-
+        <p class="hero-caption">
+          This demonstration shows real-time payload yaw control on Raspberry Pi
+          using yaw angles estimated from camera images.
+          The left shows the proposed control system, while the right shows the same conditions without control.
+        </p>
+        </div>
     </section>
 
   </main>
 </Layout>
+
+<style>
+  .hero-video {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-video video {
+    width: 100%;
+    display: block;
+  }
+
+  .hero-caption {
+    width: min(100%, 760px);
+    margin: 12px auto 0;
+    text-align: left;
+    line-height: 1.7;
+    color: #555;
+  }
+</style>
