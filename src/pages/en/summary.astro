@@ -1,0 +1,105 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const title = "Summary";
+---
+
+<Layout title={`${title} | Payload Yaw Control`} lang="en">
+  <article class="detail-page">
+    <h1>{title}</h1>
+
+    <section class="content-section">
+      <p>
+        This project integrates a reinforcement learning controller,
+        camera-based payload yaw estimation, and real-time execution on
+        Raspberry Pi to build an image-based payload yaw control system.
+      </p>
+
+      <p>
+        The results demonstrate not only that payload yaw can be controlled
+        in simulation, but also that image-based feedback control can be
+        executed on an edge device.
+      </p>
+    </section>
+
+    <section class="content-section">
+      <h2>Potential for Real-World Applications</h2>
+
+      <p>
+        Although the control model was trained in a physics simulation,
+        it uses the yaw angle estimated from camera images during control,
+        rather than the ground-truth yaw provided by the physics engine.
+      </p>
+
+      <p>
+        By separating image-based state estimation from the control model,
+        the same system architecture can be extended to real-world
+        applications using camera images as input.
+      </p>
+    </section>
+
+    <section class="content-section">
+      <h2>Real-Time Control on Raspberry Pi</h2>
+
+      <p>
+        Both image-based pose estimation and the control model were executed
+        on Raspberry Pi while maintaining a 3 Hz control cycle.
+      </p>
+
+      <p>
+        The control performance on Raspberry Pi was comparable to that in the
+        development environment, demonstrating that image-based feedback
+        control can be implemented on a compact edge computer without a
+        high-performance GPU.
+      </p>
+    </section>
+
+    <section class="content-section">
+      <h2>Applications to Other Control Systems</h2>
+
+      <p>
+        This project focuses on payload yaw control using four thrusters.
+      </p>
+
+      <p>
+        However, the overall architecture—estimating the system state from
+        camera images and using the estimated state as input to a control
+        model—is not limited to thruster control.
+        By adapting the training environment and control outputs to different
+        actuators and target systems, the same approach can be applied to
+        image-based feedback control for transport equipment, mobile robots,
+        and attitude control systems.
+      </p>
+    </section>
+
+    <section class="content-section">
+      <h2>Toward Real-World Deployment</h2>
+
+      <p>
+        This project verified the effectiveness of the proposed image-based
+        control system in a simulation environment.
+      </p>
+
+      <p>
+        Applying the system to real hardware will require additional
+        validation, including differences between simulated and real camera
+        images, environmental disturbances, actuator dynamics, and output
+        limitations.
+        Addressing these factors will enable the system to move closer to
+        practical real-world applications.
+      </p>
+    </section>
+  </article>
+</Layout>
+
+<style>
+  .detail-page > h1 {
+    margin: 0 0 20px;
+    font-weight: 500;
+  }
+
+  .content-section {
+    scroll-margin-top: 32px;
+    margin-bottom: 32px;
+  }
+</style>

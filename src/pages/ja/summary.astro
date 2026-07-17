@@ -1,0 +1,113 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const title = "まとめ";
+---
+
+<Layout title={`${title} | 吊り荷 Yaw 制御`} lang="ja">
+  <article class="detail-page">
+    <h1>{title}</h1>
+
+    <section class="content-section">
+      <p>
+        本プロジェクトでは、強化学習による制御モデル、
+        カメラ画像による吊り荷 Yaw 推定、
+        Raspberry Pi 上でのリアルタイム実行を統合し、
+        画像ベースの吊り荷 Yaw 制御システムを構築しました。
+      </p>
+
+      <p>
+        今回の結果は、シミュレーション上で制御できたことだけでなく、
+        画像から得た姿勢情報を用いた制御を、
+        エッジデバイス上で実行できる可能性を示しています。
+      </p>
+    </section>
+
+    <section class="content-section">
+      <h2>実機への適用可能性</h2>
+
+      <p>
+        制御モデルは物理エンジン上で学習しましたが、
+        制御時には物理エンジンが持つ正解の Yaw 角ではなく、
+        カメラ画像から推定した Yaw 角を入力として使用しています。
+      </p>
+
+      <p>
+        画像による計測と制御モデルを分離して構成したことで、
+        実カメラから得た画像を入力とする実機システムへ展開できる可能性があります。
+      </p>
+    </section>
+
+    <section class="content-section">
+      <h2>Raspberry Pi によるリアルタイム制御</h2>
+
+      <p>
+        画像姿勢推定と制御モデルを Raspberry Pi 上で実行し、
+        3Hz の制御周期を維持できることを確認しました。
+      </p>
+
+      <p>
+        また、Raspberry Pi 環境でも、開発環境と大きく異ならない制御結果が得られました。
+        この結果から、高性能な GPU を搭載しない小型計算機でも、画像ベース制御を実行できる可能性があります。
+      </p>
+    </section>
+
+    <section class="content-section">
+      <h2>他の制御対象への適用</h2>
+
+      <p>
+        本プロジェクトでは、4 基のスラスターを用いた吊り荷 Yaw 制御を対象としました。
+      </p>
+
+      <p>
+        一方で、カメラ画像から対象物の状態を推定し、
+        その推定結果を制御モデルへ入力するという構成は、スラスター制御だけに限定されません。
+        アクチュエータや制御対象に応じて学習環境と出力を変更することで、
+        搬送装置、移動機械、姿勢制御装置など、画像を用いたフィードバック制御へ展開できると考えています。
+      </p>
+    </section>
+
+    <section class="content-section">
+      <h2>実機活用へ</h2>
+
+      <p>
+        今回は、シミュレーション環境上で画像ベース制御システムの有効性を確認しました。
+      </p>
+
+      <p>
+        実機への適用に向けては、実カメラ画像とシミュレーション画像の差、
+        実環境の外乱、アクチュエータの応答特性や出力制限などを考慮した検証が必要です。
+            これらを反映することで、より実環境に近い画像ベース制御システムへ発展できると考えています。
+      </p>
+    </section>
+  </article>
+</Layout>
+
+
+<style>
+  .detail-page > h1 {
+    margin: 0 0 20px;
+    font-weight: 500;
+  }
+
+  .summary-list {
+    margin: 20px 0 0;
+    padding-left: 1.4em;
+    line-height: 1.9;
+  }
+
+  .summary-list li + li {
+    margin-top: 6px;
+  }
+
+  .content-section {
+    scroll-margin-top: 32px;
+    margin-bottom: 32px;
+  }
+  .update-note {
+    margin: 48px 0 0;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+  }
+</style>
