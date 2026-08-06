@@ -1,6 +1,8 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import OverviewFlow from "../../components/OverviewFlow.astro";
+import Header from "../../components/Header.astro";
+
 const title = "Overview";
 const base = import.meta.env.BASE_URL;
 ---
@@ -13,7 +15,8 @@ const base = import.meta.env.BASE_URL;
   nextHref={`${base}/en/environment`}
   nextLabel="Environment"
 >
-    <main class="overview-page">
+    <Header slot="header" lang="en" current="overview" />
+    <div class="overview-page">
         <section class="overview-intro">
             <h1>Overview</h1>
             <p>
@@ -120,7 +123,7 @@ const base = import.meta.env.BASE_URL;
                 </a>
             </div>            
         </section>
-    </main>
+    </div>
 </Layout>
 
 <style>

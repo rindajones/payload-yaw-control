@@ -1,32 +1,41 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import "../../styles/global.css";
+import Footer from "../../components/Footer.astro";
 
+const base = import.meta.env.BASE_URL;
+const title = "Contact";
 const email = "hayashida@rindatech.com";
 const linkedinUrl = "https://www.linkedin.com/in/hayashida-rindajones/";
 
 ---
 
-<Layout title="Contact | Payload Yaw Control" lang="en">
-  <section class="contact">
-    <h1>Contact</h1>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" href={`${base}favicon.ico`} />
+    <title>{title}</title>
+  </head>
 
-    <p class="contact-intro">
-    If you are interested in this project, have a technical problem
-    you would like to discuss, or are considering collaboration,
-    please feel free to contact me.
-    </p>
-    <div class="contact-list">
-      <section class="contact-item">
+  <body>
+    <nav class="project-nav">
+      <a href={`${base}en/`}>Top</a>
+      <a href={`${base}ja/contact`}>日本語</a>
+    </nav>
+
+    <main class="contact-page">
+      <h1>Contact</h1>
+      <p class="contact-intro">
+      If you are interested in this project, have a technical problem
+      you would like to discuss, or are considering collaboration,
+      please feel free to contact me.      
+      </p>
         <h2>Email</h2>
-
         <a href={`mailto:${email}`}>
           {email}
         </a>
-      </section>
 
-      <section class="contact-item">
         <h2>LinkedIn</h2>
-
         <a
           href={linkedinUrl}
           target="_blank"
@@ -34,7 +43,71 @@ const linkedinUrl = "https://www.linkedin.com/in/hayashida-rindajones/";
         >
           View my LinkedIn profile
         </a>
-      </section>
-    </div>
-  </section>
-</Layout>
+    </main>
+
+    <Footer lang="en" />
+  </body>
+</html>
+<style>
+  .project-nav {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    padding: 18px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  main {
+    width: min(100% - 40px, 960px);
+    margin: 0 auto;
+  }
+
+  .hero {
+    padding: 80px 0;
+    text-align: center;
+  }
+
+  .hero-subtitle,
+  .part-label {
+    color: #666;
+  }
+
+  .hero-text {
+    max-width: 720px;
+    margin: 24px auto 0;
+    line-height: 1.8;
+  }
+
+  .part-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .part-links article {
+    padding: 24px;
+    border: 1px solid #ddd;
+  }
+
+  .part-links a {
+    display: inline-block;
+    margin: 12px 18px 0 0;
+  }
+
+  .part-summary {
+    padding: 72px 0;
+    border-top: 1px solid #ddd;
+    scroll-margin-top: 24px;
+  }
+
+  video {
+    width: 100%;
+    margin-top: 24px;
+  }
+
+  @media (max-width: 700px) {
+    .part-links {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

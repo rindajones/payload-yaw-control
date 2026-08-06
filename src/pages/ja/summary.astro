@@ -1,10 +1,12 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
 
 const title = "まとめ";
 ---
 
 <Layout title={`${title} | 吊り荷 Yaw 制御`} lang="ja">
+  <Header slot="header" lang="ja" current="overview" />
   <article class="detail-page">
     <h1>{title}</h1>
 
@@ -85,11 +87,10 @@ const title = "まとめ";
 
 
 <style>
-  .detail-page > h1 {
-    margin: 0 0 20px;
-    font-weight: 500;
-  }
 
+  .detail-page {
+    padding: 32px 0 64px;
+  }
   .summary-list {
     margin: 20px 0 0;
     padding-left: 1.4em;

@@ -1,5 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
 
 const title = "画像ベース制御";
 const base = import.meta.env.BASE_URL;
@@ -13,6 +14,7 @@ const base = import.meta.env.BASE_URL;
   nextHref={`${base}/ja/summary`}
   nextLabel="まとめ"
 >
+  <Header slot="header" lang="ja" current="overview" />
   <article class="detail-page">
     <h1>{title}</h1>
     <p>
@@ -278,10 +280,10 @@ const base = import.meta.env.BASE_URL;
 </Layout>
 
 <style>
-  .detail-page {
-    padding-bottom: 24px;    
-  }
 
+  .detail-page {
+    padding: 32px 0 64px;
+  }
   .detail-page > h1 {
     margin: 0 0 20px;
     font-weight: 500;

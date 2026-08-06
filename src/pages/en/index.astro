@@ -1,60 +1,185 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import "../../styles/global.css";
+import Footer from "../../components/Footer.astro";
+
 const base = import.meta.env.BASE_URL;
+
+const title = "Payload Yaw Control";
+const description =
+  "Development of a payload yaw control system using reinforcement learning, image-based pose estimation, and Raspberry Pi.";
 ---
 
-<Layout
-  title="Image-based Payload Yaw Control"
-  lang="en"
->
-  <main>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
 
-    <section class="hero">
+    <link rel="icon" href={`${base}favicon.ico`} />
 
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+
+  <body>
+    <nav class="project-nav">
+    <!--  <a href="#part02">Part 2</a> -->
+      <a href={`${base}en/overview`}>Part 1</a>
+      Part 2
+      <a href={`${base}en/contact`}>Contact</a>
+      <a href={`${base}ja/`}>日本語</a>
+    </nav>
+
+    <main>
+      <section class="hero">
         <p class="hero-subtitle">
-            Demonstration using Reinforcement Learning,
-            Image-based Pose Estimation,
-            and Raspberry Pi
+          Demonstration using Reinforcement Learning,
+          Image-based Pose Estimation,
+          and Raspberry Pi
         </p>
-        <h2>
-            Image-based Payload Yaw Control
-        </h2>
+
+        <h1>Payload Yaw Control</h1>
 
         <p class="hero-text">
-            The system estimates payload orientation from camera images
-            and automatically controls the yaw angle
-            using four thrusters.
+          This project develops an autonomous payload yaw control system<br />
+          by combining image-based pose estimation with reinforcement learning.
+          <br />
+          The estimated yaw angle is used to control four thrusters
+          in real time.
         </p>
+      </section>
 
-        <div class="hero-video">
+      <section class="part-links">
+        <article>
+          <p class="part-label">Part 2 — Latest</p>
+
+          <h2>Low-Power Variable Target Yaw Control</h2>
+
+          <p>
+            A single control model supports target yaw angles of
+            0°, ±45°, and ±90°.
+            Low-power control is evaluated using three payload types.
+          </p>
+
+          <a href="#part02">Overview</a>
+          <!--<a href={`${base}en/part02/`}>Read Part 2</a>-->
+        </article>
+
+        <article>
+          <p class="part-label">Part 1</p>
+
+          <h2>Image-based Payload Yaw Control</h2>
+
+          <p>
+            A baseline system that estimates payload yaw from camera images
+            and executes the learned controller in real time on Raspberry Pi.
+          </p>
+
+          <a href="#part01">Overview</a>
+          <a href={`${base}en/overview`}>Read Part 1</a>
+        </article>
+      </section>
+
+      <section id="part02" class="part-summary">
+        <h2>Part 2 Overview</h2>
+
+        <p>
+          Part 2 extends the baseline system by introducing variable target yaw
+          control and low-power thruster control.
+          The controller is evaluated for three payload types at
+          0°, ±45°, and ±90°.
+        </p>
         <video controls muted playsinline preload="metadata">
           <source
-          src={`${base}/videos/With_Without_Control-Raspberry_Pi.mp4`}
-          type="video/mp4"
+            src={`${base}videos/Part02/HSteel_0001-1900.mp4`}
+            type="video/mp4"
           />
-          お使いのブラウザは動画再生に対応していません。
+        </video>        
+      </section>
+
+      <section id="part01" class="part-summary">
+        <h2>Part 1 Overview</h2>
+
+        <p>
+          Part 1 presents the baseline payload yaw control system combining
+          image-based yaw estimation, reinforcement learning,
+          and real-time execution on Raspberry Pi.
+        </p>
+
+        <video controls muted playsinline preload="metadata">
+          <source
+            src={`${base}videos/With_Without_Control-Raspberry_Pi.mp4`}
+            type="video/mp4"
+          />
         </video>
 
         <p class="hero-caption">
           This demonstration shows real-time payload yaw control on Raspberry Pi
           using yaw angles estimated from camera images.
-          The left shows the proposed control system, while the right shows the same conditions without control.
+          The left shows the proposed control system, while the right shows the
+          same conditions without control.
         </p>
-        </div>
-    </section>
+      </section>
+    </main>
 
-  </main>
-</Layout>
+    <Footer lang="en" />
+  </body>
+</html>
 
 <style>
-  .hero-video {
+  .project-nav {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    gap: 32px;
+    padding: 18px;
+    border-bottom: 1px solid #ddd;
   }
 
-  .hero-video video {
+  main {
+    width: min(100% - 40px, 960px);
+    margin: 0 auto;
+  }
+
+  .hero {
+    padding: 80px 0;
+    text-align: center;
+  }
+
+  .hero-subtitle,
+  .part-label {
+    color: #666;
+  }
+
+  .hero-text {
+    max-width: 720px;
+    margin: 24px auto 0;
+    line-height: 1.8;
+  }
+
+  .part-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .part-links article {
+    padding: 24px;
+    border: 1px solid #ddd;
+  }
+
+  .part-links a {
+    display: inline-block;
+    margin: 12px 18px 0 0;
+  }
+
+  .part-summary {
+    padding: 72px 0;
+    border-top: 1px solid #ddd;
+    scroll-margin-top: 24px;
+  }
+
+  video {
     width: 100%;
-    display: block;
+    margin-top: 24px;
   }
 
   .hero-caption {
@@ -63,5 +188,11 @@ const base = import.meta.env.BASE_URL;
     text-align: left;
     line-height: 1.7;
     color: #555;
+  }
+
+  @media (max-width: 700px) {
+    .part-links {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

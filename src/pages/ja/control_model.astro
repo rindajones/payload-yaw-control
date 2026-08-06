@@ -1,5 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
 
 const title = "制御モデルの学習";
 const base = import.meta.env.BASE_URL;
@@ -13,6 +14,7 @@ const base = import.meta.env.BASE_URL;
   nextHref={`${base}/ja/yaw_estimation`}
   nextLabel="Yaw角の推定"
 >
+  <Header slot="header" lang="ja" current="overview" />
   <article class="detail-page">
     <h1>{title}</h1>
     <p>

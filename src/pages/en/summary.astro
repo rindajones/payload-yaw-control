@@ -1,13 +1,13 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-
+import Header from "../../components/Header.astro";
 const title = "Summary";
 ---
 
 <Layout title={`${title} | Payload Yaw Control`} lang="en">
+  <Header slot="header" lang="en" current="overview" />
   <article class="detail-page">
     <h1>{title}</h1>
-
     <section class="content-section">
       <p>
         This project integrates a reinforcement learning controller,

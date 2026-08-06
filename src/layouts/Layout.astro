@@ -1,7 +1,6 @@
 ---
 import "../styles/global.css";
 
-import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 
 interface Props {
@@ -56,7 +55,7 @@ const description = descriptions[lang];
   </head>
 
   <body>
-    <Header lang={lang} />
+    <slot name="header" />
 
     <main>
       <slot />

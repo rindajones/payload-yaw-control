@@ -1,0 +1,185 @@
+---
+interface Props {
+  lang: "ja" | "en";
+}
+
+const { lang } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+const menus = {
+  ja: [
+    { name: "制御環境", url: `${base}/ja/environment` },
+    { name: "制御モデル学習", url: `${base}/ja/control_model` },
+    { name: "Yaw角の推定", url: `${base}/ja/yaw_estimation` },
+    { name: "画像ベース制御", url: `${base}/ja/raspberry_pi` },
+    { name: "まとめ", url: `${base}/ja/summary` },
+  ],
+
+  en: [
+    { name: "Overview", url: `${base}/en/overview` },
+    { name: "Environment", url: `${base}/en/environment` },
+    { name: "Conrol Model", url: `${base}/en/control_model` },
+    { name: "Yaw Estimation", url: `${base}/en/yaw_estimation` },
+    { name: "Vision-Based Control", url: `${base}/en/raspberry_pi` },
+    { name: "Summary", url: `${base}/en/summary` },
+  ],
+};
+
+const siteName = {
+  ja: "吊り荷 Yaw 制御",
+  en: "Payload Yaw Control",
+};
+
+const currentMenus = menus[lang];
+---
+<header>
+  <div class="container">
+    <div class="header-top">
+      <h1>
+        <a href={`${base}/${lang}/`}>
+          {siteName[lang]}
+        </a>
+      </h1>
+
+      <details class="mobile-menu">
+        <summary aria-label="メニューを開く">☰</summary>
+
+        <div class="mobile-menu-panel">
+          <nav class="mobile-main-nav">
+            {
+              currentMenus.map((menu) => (
+                <a href={menu.url}>{menu.name}</a>
+              ))
+            }
+          </nav>
+
+          <nav class="mobile-language-nav" aria-label="言語切替">
+            <a href={`${base}/ja/`}>日本語</a>
+            <span>/</span>
+            <a href={`${base}/en/`}>English</a>
+          </nav>
+        </div>
+      </details>
+    </div>
+
+    <div class="header-bottom">
+      <nav class="main-nav">
+        {
+          currentMenus.map((menu) => (
+            <a href={menu.url}>{menu.name}</a>
+          ))
+        }
+      </nav>
+
+      <nav class="language-nav" aria-label="言語切替">
+        <a
+          href={`${base}/ja/`}
+          aria-current={lang === "ja" ? "page" : undefined}
+        >
+          日本語
+        </a>
+        <span>/</span>
+        <a
+          href={`${base}/en/`}
+          aria-current={lang === "en" ? "page" : undefined}
+        >
+          English
+        </a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<style>
+  header .container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px 0;
+  }
+
+  header h1 {
+    width: 100%;
+    text-align: center;
+  }
+
+  .header-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .main-nav {
+    display: flex;
+    gap: 32px;
+  }
+
+  .language-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .header-top {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .mobile-menu {
+    display: none;
+  }
+
+  @media (max-width: 700px) {
+    .header-top {
+      position: relative;
+    }
+
+    .header-bottom {
+      display: none;
+    }
+
+    .mobile-menu {
+      display: block;
+    }
+
+    .mobile-menu summary {
+      cursor: pointer;
+      list-style: none;
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+
+    .mobile-menu summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .mobile-menu-panel {
+      position: absolute;
+      top: calc(100% + 16px);
+      left: 0;
+      right: 0;
+      z-index: 10;
+      padding: 20px;
+      background: white;
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .mobile-main-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .mobile-language-nav {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid #ddd;
+    }
+  }
+</style>
