@@ -13,7 +13,7 @@ const { prev, next } = Astro.props;
 const base = import.meta.env.BASE_URL;
 
 const withBase = (href: string) =>
-  `${base}${href.replace(/^\/+/, "")}`;
+  `${base}/${href.replace(/^\/+/, "")}`;  
 ---
 
 <div class="part02-pager">
