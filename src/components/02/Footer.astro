@@ -1,0 +1,68 @@
+---
+interface Props {
+  lang?: "ja" | "en";
+}
+
+const { lang = "ja" } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+const isEnglish = lang === "en";
+const contactHref = isEnglish
+  ? `${base}en/contact/`
+  : `${base}ja/contact/`;
+
+const contactLabel = isEnglish
+  ? "Contact"
+  : "お問い合わせ";
+---
+
+<footer class="part02-footer">
+  <div class="part02-footer-inner">
+    <p>© 2026 Hidekazu Hayashida</p>
+
+    <a href={contactHref}>
+      {contactLabel}
+    </a>
+  </div>
+</footer>
+
+<style>
+  .part02-footer {
+    margin-top: 24px;
+    border-top: 1px solid var(--border-color);
+    color: var(--muted-color);
+  }
+
+  .part02-footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+
+    width: calc(100% - var(--page-gutter));
+    margin-inline: auto;
+    padding-block: 24px 32px;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: var(--muted-color);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--link-color);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 640px) {
+    .part02-footer-inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+  }
+</style>

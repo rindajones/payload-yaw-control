@@ -1,0 +1,322 @@
+---
+import Layout from "../../../layouts/Layout02.astro";
+import Header from "../../../components/02/Header.astro";
+import Footer from "../../../components/02/Footer.astro";
+import Pager from "../../../components/02/Pager.astro";
+import Style from "../../../components/02/Style.astro";
+
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout title="Objectives | Variable-Target Yaw Control" lang="en">
+  <Style />
+  <Header current="purpose" lang="en" />
+
+  <main class="part02-main">
+    <header class="page-header">
+      <h2 class="page-title">Objectives</h2>
+      <p class="page-lead">
+        This study focuses on three types of suspended payloads—H-steel, plate, and truss—and introduces two new objectives:
+        <strong>low-output control</strong> and <strong>variable-target yaw control</strong>.
+      </p>
+    </header>
+
+    <section class="content-section">
+      <div class="purpose-grid">
+        <article class="purpose-card">
+          <h2 class="section-title">Low-Output Control</h2>
+          <img
+            class="purpose-image"
+            src={`${base}/images/02/purpose/low-output-control.png`}
+            alt="Control result showing low thruster output after reaching the target yaw angle"
+            loading="lazy"
+          />
+          <div class="purpose-body">
+            <p class="purpose-conclusion">
+              This study evaluates whether the target yaw angle can be reached
+              using low-output control suitable for practical operation.
+            </p>            
+            <a class="detail-link" href="#low-output">
+              Low-Output Control ↓
+            </a>
+          </div>
+        </article>
+
+        <article class="purpose-card">
+          <h2 class="section-title">Variable-Target Yaw</h2>
+          <img
+            class="purpose-image"
+            src={`${base}/images/02/purpose/variable-target-yaw.png`}
+            alt="Variable-target yaw control from the initial 0° orientation to multiple target yaw angles"
+            loading="lazy"
+          />
+          <div class="purpose-body">
+            <p class="purpose-conclusion">
+              Use a single control model for multiple target orientations instead of preparing a separate model for each target angle. The yaw-angle tolerance is ±5°.
+            </p>
+            <a class="detail-link" href="#variable-target">
+              Variable-Target Yaw ↓
+            </a>            
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="low-output" class="content-section">
+      <h2 class="section-title">Low-Output Control</h2>
+      <div class="purpose-detail">
+        <h3>Background</h3>
+        <div class="purpose-detail-layout">
+          <div class="purpose-detail-image">
+            <img
+              src={`${base}/images/02/purpose/old_controls.png`}
+              alt="Part 1 control results"
+              loading="lazy"
+            />
+          </div>
+          <div class="purpose-detail-text">
+            <p>
+              In Part 1, attitude control prioritized reaching the target yaw angle.
+              Although the target orientation was successfully achieved,
+            </p>
+            <ul>
+              <li>thrusters were sometimes used near maximum output</li>
+              <li>intermittent ON/OFF operation continued even after reaching the target</li>
+              <li>the resulting thruster behavior was not always natural</li>
+            </ul>
+            <p class="purpose-detail-conclusion">
+              Simply reaching the target angle is not sufficient
+              for control intended for practical operation.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="purpose-detail">
+        <h3>Approach</h3>
+        <p>
+        The goal here is to maintain target-reaching performance while achieving more natural attitude holding with lower thruster output.
+        </p>
+        <div class="purpose-detail-layout">
+          <div class="purpose-detail-image">
+            <img
+              src={`${base}/images/02/purpose/new_control.png`}
+              alt="Part 2 control results"
+              loading="lazy"
+            />
+            <p class="heatmap-title">How to read the heatmap</p>
+            <ul class="heatmap-guide">
+              <li>Horizontal axis: time</li>
+              <li>Vertical axis: thrusters (T1–T4)</li>
+              <li>Color: normalized output of each thruster (dark = low, bright = high)</li>
+            </ul>
+          </div>
+          <div class="purpose-detail-text">
+          <p>
+            The following four design policies were used to combine target-orientation achievement with low-output attitude holding.
+            </p>
+            <br/>
+            <div class="design-policy">
+              <h4>1. Limit maximum output</h4>
+              <p>Gradually reduce the allowable maximum thruster output as the payload approaches the target angle.</p>
+
+              <h4>2. Reduce average output</h4>
+              <p>Apply a penalty based on output magnitude to reduce overall control effort.</p>
+
+              <h4>3. Smooth output changes</h4>
+              <p>Limit abrupt command changes to suppress oscillation and frequent switching of thruster output.</p>
+
+              <h4>4. Maintain low output after reaching the target</h4>
+              <p>Require stable attitude holding with low average output even after the target angle has been reached.</p>
+            </div>
+            <br/>
+            <p class="purpose-conclusion">
+              In addition to attitude-control performance, this report uses heatmaps
+              to evaluate the magnitude and temporal variation of thruster output
+              and assess the feasibility of low-output control.
+            </p>            
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="variable-target" class="content-section">
+      <h2 class="section-title">Variable-Target Yaw</h2>
+
+      <div class="purpose-detail">
+        <p>
+          Multiple target yaw angles are given to a single control model,
+          which controls the payload toward each target orientation.
+        </p>
+        <div class="variable-target-image">
+          <img
+            src={`${base}/images/02/purpose/reached_target_yaws.png`}
+            alt="Control results for target yaw angles of 0°, ±45°, and ±90°"
+            loading="lazy"
+          />
+        </div>
+        <br/>
+        <p>
+          Images from the camera mounted on the thruster frame.
+        </p>
+        <div class="variable-target-image">
+          <img
+            src={`${base}/images/02/purpose/reached_target_yaws_Cam.png`}
+            alt="Control results for each target yaw angle viewed from the onboard camera"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Pager
+    prev={{
+      title: "Top",
+      href: "/en/",
+    }}
+    next={{
+      title: "H-Steel",
+      href: "/en/02/hsteel",
+    }}
+  />
+  <Footer lang="en" />
+</Layout>
+
+<style>
+  .purpose-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .purpose-card {
+    min-width: 0;
+  }
+
+  .purpose-image {
+    width: 100%;
+    height: 480px;
+    object-fit: contain;
+  }  
+
+  .purpose-body p {
+    margin: 0 0 1rem;
+    line-height: 1.9;
+  }
+
+  .purpose-list {
+    margin: 1.25rem 0 1.5rem;
+    padding-left: 1.4rem;
+  }
+
+  .purpose-list li {
+    margin-bottom: 0.55rem;
+    line-height: 1.7;
+  }
+
+  .purpose-conclusion {
+    font-weight: 700;
+  }
+
+  .target-definition {
+    display: grid;
+    gap: 0;
+    margin: 1.25rem 0 1.5rem;
+    border-top: 1px solid #d8d8d8;
+  }
+
+  .target-definition > div {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #d8d8d8;
+  }
+
+  .target-definition dt {
+    font-weight: 700;
+  }
+
+  .target-definition dd {
+    margin: 0;
+  }
+
+  .detail-link {
+    margin-top: 1.5rem;
+  }
+
+  .detail-link a {
+    font-weight: 700;
+  }
+
+  .purpose-detail-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 3rem;
+    align-items: start;
+  }
+  .purpose-detail-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .purpose-detail-text {
+    line-height: 1.9;
+  }
+
+  .purpose-detail-text p {
+    margin-top: 0;
+  }
+
+  .purpose-detail-text ul {
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .purpose-detail-conclusion {
+    margin-top: 2rem;
+    font-weight: 600;
+  }
+
+  .heatmap-title {
+    margin: 1rem 0 0.5rem;
+    font-weight: 600;
+  }
+
+  .heatmap-guide {
+    margin: 0;
+    padding-left: 1.5rem;
+    line-height: 1.8;
+  }
+
+  .heatmap-guide li {
+    margin: 0.25rem 0;
+  }  
+
+  .variable-target-image {
+    width: 88%;
+    margin-inline: auto;
+  }
+
+  .variable-target-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  @media (max-width: 900px) {
+    .purpose-detail-layout {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .target-definition > div {
+      grid-template-columns: 1fr;
+      gap: 0.2rem;
+    }
+  }
+</style>

@@ -1,0 +1,252 @@
+---
+interface Props {
+  current?: "purpose" | "hsteel" | "plate" | "truss" | "summary";
+  lang?: "ja" | "en";
+}
+
+const {
+  current = "purpose",
+  lang = "ja",
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+const isEnglish = lang === "en";
+const langPath = isEnglish ? "en" : "ja";
+
+const menus = isEnglish
+  ? [
+      { id: "purpose", name: "Purpose", url: `${base}/en/02/` },
+      { id: "hsteel", name: "H-Steel", url: `${base}/en/02/hsteel` },
+    ]
+  : [
+      { id: "purpose", name: "目的", url: `${base}/ja/02/` },
+      { id: "hsteel", name: "H鋼", url: `${base}/ja/02/hsteel` },
+    ];
+
+const title = isEnglish
+  ? "Variable Target Yaw Control"
+  : "可変目標 Yaw 制御";
+
+const menuLabel = isEnglish
+  ? "Part 2 menu"
+  : "Part 2 メニュー";
+
+const relatedLabel = isEnglish
+  ? "Related pages"
+  : "関連ページ";
+---
+
+<header class="part02-header">
+  <div class="container">
+    <div class="header-top">
+      <div class="site-title">
+        <p class="part-label">Payload Yaw Control — Part 2</p>
+
+        <h1>
+          <a href={`${base}/${langPath}/02/`}>
+            {title}
+          </a>
+        </h1>
+      </div>
+
+      <details class="mobile-menu">
+        <summary aria-label={isEnglish ? "Open menu" : "メニューを開く"}>
+          ☰
+        </summary>
+
+        <div class="mobile-menu-panel">
+          <nav class="mobile-main-nav" aria-label={menuLabel}>
+            {menus.map((menu) => (
+              <a
+                href={menu.url}
+                aria-current={current === menu.id ? "page" : undefined}
+              >
+                {menu.name}
+              </a>
+            ))}
+          </nav>
+
+          <nav class="mobile-sub-nav" aria-label={relatedLabel}>
+            <a href={`${base}/${langPath}/`}>Part 1</a>
+            <span>/</span>
+
+            {isEnglish ? (
+              <a href={`${base}/ja/02/`}>日本語</a>
+            ) : (
+              <a href={`${base}/en/02/`}>English</a>
+            )}
+          </nav>
+        </div>
+      </details>
+    </div>
+
+    <div class="header-bottom">
+      <nav class="main-nav" aria-label={menuLabel}>
+        {menus.map((menu) => (
+          <a
+            href={menu.url}
+            aria-current={current === menu.id ? "page" : undefined}
+          >
+            {menu.name}
+          </a>
+        ))}
+      </nav>
+
+      <nav class="sub-nav" aria-label={relatedLabel}>
+        <a href={`${base}/${langPath}/`}>Part 1</a>
+        <span>/</span>
+
+        {isEnglish ? (
+          <a href={`${base}/ja/02/`}>日本語</a>
+        ) : (
+          <a href={`${base}/en/02/`}>English</a>
+        )}
+      </nav>
+    </div>
+  </div>
+</header>
+
+<style>
+  .part02-header {
+    border-bottom: 1px solid var(--border-color);
+    background: var(--surface-color);
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: min(calc(100% - 40px), var(--content-width));
+    margin: 0 auto;
+    padding: 24px 0 18px;
+  }
+
+  .header-top {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .site-title {
+    width: 100%;
+    text-align: center;
+  }
+
+  .part-label {
+    margin: 0 0 4px;
+    color: var(--muted-color);
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(1.55rem, 3vw, 2rem);
+    line-height: 1.25;
+  }
+
+  h1 a {
+    color: var(--text-color);
+    text-decoration: none;
+  }
+
+  .header-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .main-nav,
+  .sub-nav {
+    display: flex;
+    align-items: center;
+  }
+
+  .main-nav {
+    gap: 28px;
+  }
+
+  .sub-nav {
+    gap: 10px;
+    white-space: nowrap;
+  }
+
+  nav a {
+    color: var(--link-color);
+    text-decoration: none;
+    font-size: 1.05rem;
+  }
+
+  nav a:hover {
+    text-decoration: underline;
+  }
+
+  nav a[aria-current="page"] {
+    color: var(--text-color);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .mobile-menu {
+    display: none;
+  }
+
+  @media (max-width: 760px) {
+    .site-title {
+      padding-right: 44px;
+      text-align: left;
+    }
+
+    .header-bottom {
+      display: none;
+    }
+
+    .mobile-menu {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      display: block;
+      transform: translateY(-50%);
+    }
+
+    .mobile-menu summary {
+      cursor: pointer;
+      list-style: none;
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+
+    .mobile-menu summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .mobile-menu-panel {
+      position: absolute;
+      top: calc(100% + 18px);
+      right: -20px;
+      z-index: 20;
+      width: min(320px, calc(100vw - 40px));
+      padding: 20px;
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 30px rgb(0 0 0 / 0.08);
+    }
+
+    .mobile-main-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .mobile-sub-nav {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+    }
+  }
+</style>

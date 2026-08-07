@@ -1,0 +1,320 @@
+---
+import Layout from "../../../layouts/Layout02.astro";
+import Header from "../../../components/02/Header.astro";
+import Footer from "../../../components/02/Footer.astro";
+import Pager from "../../../components/02/Pager.astro";
+import Style from "../../../components/02/Style.astro";
+
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout title="目的 | 可変目標 Yaw 制御" lang="ja">
+  <Style />
+  <Header current="purpose" />
+
+  <main class="part02-main">
+    <header class="page-header">
+      <h2 class="page-title">目的</h2>
+      <p class="page-lead">
+        本検証では、H鋼・平板・トラスの三種類の吊り荷を対象として、
+        <strong>低出力制御</strong>と<strong>可変目標Yaw角への対応</strong>を新たな目的とした。
+      </p>
+    </header>
+
+    <section class="content-section">
+      <div class="purpose-grid">
+        <article class="purpose-card">
+          <h2 class="section-title">低出力制御</h2>
+          <img
+            class="purpose-image"
+            src={`${base}/images/02/purpose/low-output-control.png`}
+            alt="目標Yaw角への到達後にスラスター出力を低く維持する制御結果"
+            loading="lazy"
+          />
+          <div class="purpose-body">
+            <p class="purpose-conclusion">
+              目標角へ到達するだけでなく、実運用を意識した低出力制御の実現性を確認する。
+            </p>
+            <a class="detail-link" href="#low-output">
+              低出力制御の詳細 ↓
+            </a>
+          </div>
+        </article>
+
+        <article class="purpose-card">
+          <h2 class="section-title">可変目標 Yaw 角</h2>
+          <img
+            class="purpose-image"
+            src={`${base}/images/02/purpose/variable-target-yaw.png`}
+            alt="初期姿勢0度からプラス90度およびマイナス90度までの可変目標Yaw角"
+            loading="lazy"
+          />
+          <div class="purpose-body">
+            <p class="purpose-conclusion">
+              目標角ごとに個別モデルを用意せず、一つのモデルで複数の目標姿勢へ対応する。角度誤差は±5°とした。
+            </p>
+            <a class="detail-link" href="#variable-target">
+              可変目標Yaw角の詳細 ↓
+            </a>            
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="low-output" class="content-section">
+      <h2 class="section-title">低出力制御</h2>
+      <div class="purpose-detail">
+        <h3>背景</h3>
+        <div class="purpose-detail-layout">
+          <div class="purpose-detail-image">
+            <img
+              src={`${base}/images/02/purpose/old_controls.png`}
+              alt="Part 1 の制御"
+              loading="lazy"
+            />
+          </div>
+          <div class="purpose-detail-text">
+            <p>
+              Part 1では、目標角への到達を優先した姿勢制御を行った。
+              その結果、姿勢制御自体は成功するものの
+            </p>
+            <ul>
+              <li>スラスターを最大出力付近で使用</li>
+              <li>到達後も断続的なON/OFFを繰り返す</li>
+              <li>不自然な制御となる</li>
+            </ul>
+            <p class="purpose-detail-conclusion">
+              目標角へ到達するだけでは、
+              実運用を考えた制御として十分ではない。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="purpose-detail">
+        <h3>方針</h3>
+        <p>
+        ここでは、到達性能を維持したまま、より自然で低出力な姿勢保持を目標とした。
+        </p>
+        <div class="purpose-detail-layout">
+          <div class="purpose-detail-image">
+            <img
+              src={`${base}/images/02/purpose/new_control.png`}
+              alt="Part 2 の制御"
+              loading="lazy"
+            />
+            <p class="heatmap-title">ヒートマップの見方</p>
+            <ul class="heatmap-guide">
+              <li>横軸：時間</li>
+              <li>縦軸：スラスター（T1～T4）</li>
+              <li>色：各スラスターの正規化出力（暗い＝低出力、明るい＝高出力）</li>
+            </ul>
+          </div>
+          <div class="purpose-detail-text">
+          　<p>
+            以下の4つの設計方針により、目標姿勢への到達と低出力な姿勢保持を両立を目指した。
+            </p>
+            <br/>
+            <div class="design-policy">
+              <h4>1. 最大出力の抑制</h4>
+              <p>目標角に近づくほど、使用可能なスラスター出力の上限を段階的に低減。</p>
+
+              <h4>2. 平均出力の抑制</h4>
+              <p>出力の大きさに応じたペナルティを与え、制御全体のエネルギー消費を低減。</p>
+
+              <h4>3. 出力変化の平滑化</h4>
+              <p>指令値の急激な変化を制限し、スラスター出力の振動や頻繁な切り替えを抑制。</p>
+
+              <h4>4. 到達後の低出力維持</h4>
+              <p>目標角への到達後も、低い平均出力で姿勢を安定保持することを要求。</p>
+            </div>
+            <br/>
+            <p class="purpose-conclusion">
+              本報告書では、姿勢制御性能に加え、ヒートマップからスラスター出力の大きさと
+              時間変化を評価し、低出力制御の実現性を確認する
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="variable-target" class="content-section">
+      <h2 class="section-title">可変目標Yaw角</h2>
+
+      <div class="purpose-detail">
+        <p>
+          単一の制御モデルに対して複数の目標Yaw角を与え、
+          それぞれの目標姿勢への制御を行う。
+        </p>
+        <div class="variable-target-image">
+          <img
+            src={`${base}/images/02/purpose/reached_target_yaws.png`}
+            alt="目標Yaw角 0°、±45°、±90°への制御結果"
+            loading="lazy"
+          />
+        </div>
+        <br/>
+        <p>
+          スラスター機体に設置のカメラ画像。
+        </p>
+        <div class="variable-target-image">
+          <img
+            src={`${base}/images/02/purpose/reached_target_yaws_Cam.png`}
+            alt="上方カメラから確認した各目標Yaw角への制御結果"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Pager
+    prev={{
+      title: "トップ",
+      href: "/ja/",
+    }}
+    next={{
+      title: "H鋼",
+      href: "/ja/02/hsteel",
+    }}
+  />
+  <Footer />
+</Layout>
+
+<style>
+  .purpose-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .purpose-card {
+    min-width: 0;
+  }
+
+  .purpose-image {
+    width: 100%;
+    height: 480px;
+    object-fit: contain;
+  }  
+
+  .purpose-body p {
+    margin: 0 0 1rem;
+    line-height: 1.9;
+  }
+
+  .purpose-list {
+    margin: 1.25rem 0 1.5rem;
+    padding-left: 1.4rem;
+  }
+
+  .purpose-list li {
+    margin-bottom: 0.55rem;
+    line-height: 1.7;
+  }
+
+  .purpose-conclusion {
+    font-weight: 700;
+  }
+
+  .target-definition {
+    display: grid;
+    gap: 0;
+    margin: 1.25rem 0 1.5rem;
+    border-top: 1px solid #d8d8d8;
+  }
+
+  .target-definition > div {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #d8d8d8;
+  }
+
+  .target-definition dt {
+    font-weight: 700;
+  }
+
+  .target-definition dd {
+    margin: 0;
+  }
+
+  .detail-link {
+    margin-top: 1.5rem;
+  }
+
+  .detail-link a {
+    font-weight: 700;
+  }
+
+  .purpose-detail-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 3rem;
+    align-items: start;
+  }
+  .purpose-detail-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .purpose-detail-text {
+    line-height: 1.9;
+  }
+
+  .purpose-detail-text p {
+    margin-top: 0;
+  }
+
+  .purpose-detail-text ul {
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .purpose-detail-conclusion {
+    margin-top: 2rem;
+    font-weight: 600;
+  }
+
+  .heatmap-title {
+    margin: 1rem 0 0.5rem;
+    font-weight: 600;
+  }
+
+  .heatmap-guide {
+    margin: 0;
+    padding-left: 1.5rem;
+    line-height: 1.8;
+  }
+
+  .heatmap-guide li {
+    margin: 0.25rem 0;
+  }  
+
+  .variable-target-image {
+    width: 88%;
+    margin-inline: auto;
+  }
+
+  .variable-target-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  @media (max-width: 900px) {
+    .purpose-detail-layout {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .target-definition > div {
+      grid-template-columns: 1fr;
+      gap: 0.2rem;
+    }
+  }
+</style>
