@@ -1,26 +1,229 @@
 ---
 import Layout from "../../../layouts/Layout02.astro";
-import Pager from "../../../components/02/Pager.astro";
 import Header from "../../../components/02/Header.astro";
 import Footer from "../../../components/02/Footer.astro";
+import Pager from "../../../components/02/Pager.astro";
+import Style from "../../../components/02/Style.astro";
+
+const base = import.meta.env.BASE_URL;
 ---
 
-<Layout
-  title="H鋼 | Payload Yaw Control — Part 2"
-  lang="ja"
->
-  <Header current="hsteel" />
+<Layout title="H鋼 | 可変目標 Yaw 制御" lang="ja">
+  <Style />
+  <Header current="hsteel" lang="ja"/>
 
   <main class="part02-main">
-
+    <header class="page-header">
+      <h2 class="page-title">H鋼</h2>
+      <p class="page-lead">
+        H鋼を対象として、目標Yaw角 0°、±45°、±90°に対する制御結果とスラスター<br/>出力を評価した。
+      </p>
+    </header>
 
     <section class="content-section">
-      <p class="under-construction">
-        このページは現在作成中です。
+      <h2 class="section-title">Target Yaw 0°</h2>
+
+      <div class="result-layout">
+        <div class="result-image result-image-position">
+          <img
+            src={`${base}/images/02/hsteel/hsteel_0_position.png`}
+            alt="H鋼 Target Yaw 0度の初期姿勢"
+            loading="lazy"
+          />
+        </div>
+
+        <div class="result-content">
+          <h3>制御結果</h3>
+          <p>
+            初期姿勢0°をシミュレーション終了まで安定して維持した。
+          </p>
+
+          <img
+            class="result-chart"
+            src={`${base}/images/02/hsteel/hsteel_0.png`}
+            alt="H鋼 Target Yaw 0度の制御結果"
+            loading="lazy"
+          />
+
+          <h3>スラスター出力</h3>
+          <p>
+            微小な補正出力のみで姿勢を維持し、大きな推力は不要であった。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2 class="section-title">Target Yaw +45° / +90°</h2>
+
+      <div class="comparison-grid">
+        <article class="result-card">
+          <h3>Target Yaw +45°</h3>
+
+          <h4>制御結果</h4>
+          <p>
+            目標Yaw角45°へ滑らかに収束し、その後は安定した姿勢を維持した。
+          </p>
+
+          <img
+            class="result-chart"
+            src={`${base}/images/02/hsteel/hsteel_p45.png`}
+            alt="H鋼 Target Yaw プラス45度の制御結果"
+            loading="lazy"
+          />
+
+          <h4>スラスター出力</h4>
+          <p>
+            旋回開始時に比較的大きな推力を発生させ、
+            目標角への接近に伴って出力が低下した。
+            到達後は微小な補正出力のみとなった。
+          </p>
+        </article>
+
+        <article class="result-card">
+          <h3>Target Yaw +90°</h3>
+
+          <h4>制御結果</h4>
+          <p>
+            目標Yaw角90°へ安定して収束し、到達後は姿勢を維持した。
+          </p>
+
+          <img
+            class="result-chart"
+            src={`${base}/images/02/hsteel/hsteel_p90.png`}
+            alt="H鋼 Target Yaw プラス90度の制御結果"
+            loading="lazy"
+          />
+
+          <h4>スラスター出力</h4>
+          <p>
+            45°の場合より多少大きな初期出力を使用したが、
+            目標角到達後はほぼ出力ゼロとなった。
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2 class="section-title">Target Yaw -45° / -90°</h2>
+
+      <div class="comparison-grid">
+        <article class="result-card">
+          <h3>Target Yaw -45°</h3>
+
+          <h4>制御結果</h4>
+          <p>
+            目標Yaw角-45°へ滑らかに収束し、その後は安定した姿勢を維持した。
+          </p>
+
+          <img
+            class="result-chart"
+            src={`${base}/images/02/hsteel/hsteel_m45.png`}
+            alt="H鋼 Target Yaw マイナス45度の制御結果"
+            loading="lazy"
+          />
+
+          <h4>スラスター出力</h4>
+          <p>
+            +45°の場合と同様の出力特性を示し、
+            逆方向の旋回に対応するスラスターが選択的に駆動された。
+          </p>
+        </article>
+
+        <article class="result-card">
+          <h3>Target Yaw -90°</h3>
+
+          <h4>制御結果</h4>
+          <p>
+            目標Yaw角-90°へ安定して収束し、到達後は姿勢を維持した。
+          </p>
+
+          <img
+            class="result-chart"
+            src={`${base}/images/02/hsteel/hsteel_m90.png`}
+            alt="H鋼 Target Yaw マイナス90度の制御結果"
+            loading="lazy"
+          />
+
+          <h4>スラスター出力</h4>
+          <p>
+            +90°の場合と同様に初期のみ比較的大きな推力を用い、
+            その後はほぼ出力ゼロとなった。
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2 class="section-title">制御動画</h2>
+
+      <p>
+        Target Yaw ±45°、±90°の制御結果を全景および上面から比較する。
+      </p>
+
+      <div class="video-grid">
+        <div>
+          <h3>全景</h3>
+          <video controls playsinline preload="metadata">
+            <source
+              src={`${base}/videos/02/hsteel_targets.mp4`}
+                type="video/mp4"
+            />
+          </video>
+        </div>
+
+        <div>
+          <h3>上面</h3>
+          <video controls playsinline preload="metadata">
+            <source
+              src={`${base}videos/02/hsteel_targets_Cam.mp4`}
+              type="video/mp4"
+            />
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2 class="section-title">前回との比較</h2>
+
+        <p>
+        <a href={`${base}ja/control_model#hsteel`}>Part 1</a>
+        と今回の Target Yaw +90° の制御を比較する。
+        </p>
+
+      <div class="comparison-grid comparison-grid-wide">
+        <article class="result-card">
+          <h3>前回の Target Yaw +90°</h3>
+          <img
+            class="result-chart"
+            src={`${base}/images/02/hsteel/hsteel_old_p90.png`}
+            alt="Part 1 のH鋼 Target Yaw プラス90度制御"
+            loading="lazy"
+          />
+        </article>
+
+        <article class="result-card">
+          <h3>今回の Target Yaw +90°</h3>
+          <img
+            class="result-chart"
+            src={`${base}/images/02/hsteel/hsteel_p90.png`}
+            alt="Part 2 のH鋼 Target Yaw プラス90度制御"
+            loading="lazy"
+          />
+        </article>
+      </div>
+
+      <p class="comparison-conclusion">
+        前回の制御では目標角へ高速に到達する一方、
+        オーバーシュートと継続的なスラスター出力が見られた。
+        今回の制御では到達時間は長くなるものの、
+        目標角への接近に伴って出力が滑らかに低下し、
+        到達後はほぼ無出力の状態となっている。
       </p>
     </section>
   </main>
-<!--
+
   <Pager
     prev={{
       title: "目的",
@@ -31,14 +234,72 @@ import Footer from "../../../components/02/Footer.astro";
       href: "/ja/02/plate",
     }}
   />
--->
+
   <Footer lang="ja" />
 </Layout>
 
 <style>
-  .under-construction {
-    padding: 80px 0;
-    text-align: center;
-    color: var(--muted-color);
+  .result-layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.75fr) minmax(0, 1.25fr);
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .result-image img,
+  .result-chart {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .result-content h3,
+  .result-card h3 {
+    margin-top: 0;
+  }
+
+  .result-content p,
+  .result-card p {
+    line-height: 1.9;
+  }
+
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .result-card {
+    min-width: 0;
+  }
+
+  .result-card h4 {
+    margin: 1.5rem 0 0.6rem;
+  }
+
+  .comparison-conclusion {
+    max-width: 1100px;
+    margin: 2.5rem auto 0;
+    line-height: 1.9;
+    font-weight: 600;
+  }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+  }
+
+  .video-grid video {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+  }
+
+  @media (max-width: 900px) {
+    .video-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

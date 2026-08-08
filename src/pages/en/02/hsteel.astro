@@ -1,44 +1,313 @@
 ---
 import Layout from "../../../layouts/Layout02.astro";
-import Pager from "../../../components/02/Pager.astro";
 import Header from "../../../components/02/Header.astro";
 import Footer from "../../../components/02/Footer.astro";
+import Pager from "../../../components/02/Pager.astro";
+import Style from "../../../components/02/Style.astro";
+
+const base = import.meta.env.BASE_URL;
 ---
 
-<Layout
-  title="H鋼 | Payload Yaw Control — Part 2"
-  lang="ja"
->
+<Layout title="HSteel | Variable Target Yaw Control" lang="en">
+  <Style />
   <Header current="hsteel" lang="en" />
 
   <main class="part02-main">
-
+    <header class="page-header">
+      <h2 class="page-title">HSteel</h2>
+      <p class="page-lead">
+        Control performance and thruster output were evaluated for the HSteel payload
+        at target yaw angles of 0°, ±45°, and ±90°.
+      </p>
+    </header>
 
     <section class="content-section">
-      <p class="under-construction">
-        This page is currently under construction.
+      <h2 class="section-title">Target Yaw 0°</h2>
+
+      <div class="result-layout">
+        <div class="result-image result-image-position">
+          <img
+            src={`${base}/images/02/hsteel/hsteel_0_position.png`}
+            alt="Initial position of HSteel at Target Yaw 0 degrees"
+            loading="lazy"
+          />
+        </div>
+
+        <div class="result-content">
+          <h3>Control Result</h3>
+          <p>
+            The initial yaw angle of 0° was maintained stably throughout the simulation.
+          </p>
+
+          <img
+            class="result-chart"
+            src={`${base}/images/02/hsteel/hsteel_0.png`}
+            alt="HSteel control result at Target Yaw 0 degrees"
+            loading="lazy"
+          />
+
+          <h3>Thruster Output</h3>
+          <p>
+            The attitude was maintained with only small corrective outputs,
+            without requiring large thrust.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2 class="section-title">Target Yaw +45° / +90°</h2>
+
+      <div class="comparison-grid">
+        <article class="result-card">
+          <h3>Target Yaw +45°</h3>
+
+          <h4>Control Result</h4>
+          <p>
+            The payload converged smoothly to the target yaw angle of 45°
+            and remained stable afterward.
+          </p>
+
+          <img
+            class="result-chart"
+            src={`${base}/images/02/hsteel/hsteel_p45.png`}
+            alt="HSteel control result at Target Yaw plus 45 degrees"
+            loading="lazy"
+          />
+
+          <h4>Thruster Output</h4>
+          <p>
+            Relatively large thrust was applied at the beginning of the rotation,
+            then decreased as the payload approached the target angle.
+            After reaching the target, only small corrective outputs remained.
+          </p>
+        </article>
+
+        <article class="result-card">
+          <h3>Target Yaw +90°</h3>
+
+          <h4>Control Result</h4>
+          <p>
+            The payload converged stably to the target yaw angle of 90°
+            and maintained its attitude after reaching the target.
+          </p>
+
+          <img
+            class="result-chart"
+            src={`${base}/images/02/hsteel/hsteel_p90.png`}
+            alt="HSteel control result at Target Yaw plus 90 degrees"
+            loading="lazy"
+          />
+
+          <h4>Thruster Output</h4>
+          <p>
+            A somewhat larger initial output was used than in the 45° case,
+            but the thruster output became nearly zero after reaching the target angle.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2 class="section-title">Target Yaw -45° / -90°</h2>
+
+      <div class="comparison-grid">
+        <article class="result-card">
+          <h3>Target Yaw -45°</h3>
+
+          <h4>Control Result</h4>
+          <p>
+            The payload converged smoothly to the target yaw angle of -45°
+            and remained stable afterward.
+          </p>
+
+          <img
+            class="result-chart"
+            src={`${base}/images/02/hsteel/hsteel_m45.png`}
+            alt="HSteel control result at Target Yaw minus 45 degrees"
+            loading="lazy"
+          />
+
+          <h4>Thruster Output</h4>
+          <p>
+            The output characteristics were similar to those for +45°,
+            with the thrusters corresponding to the opposite rotation direction
+            being selectively activated.
+          </p>
+        </article>
+
+        <article class="result-card">
+          <h3>Target Yaw -90°</h3>
+
+          <h4>Control Result</h4>
+          <p>
+            The payload converged stably to the target yaw angle of -90°
+            and maintained its attitude after reaching the target.
+          </p>
+
+          <img
+            class="result-chart"
+            src={`${base}/images/02/hsteel/hsteel_m90.png`}
+            alt="HSteel control result at Target Yaw minus 90 degrees"
+            loading="lazy"
+          />
+
+          <h4>Thruster Output</h4>
+          <p>
+            As in the +90° case, relatively large thrust was applied only
+            during the initial rotation, after which the output became nearly zero.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2 class="section-title">Control Videos</h2>
+
+      <p>
+        Control results for Target Yaw ±45° and ±90° are shown
+        from the overall and top views.
+      </p>
+
+      <div class="video-grid">
+        <div>
+          <h3>Overall View</h3>
+          <video controls playsinline preload="metadata">
+            <source
+              src={`${base}/videos/02/hsteel_targets.mp4`}
+              type="video/mp4"
+            />
+          </video>
+        </div>
+
+        <div>
+          <h3>Top View</h3>
+          <video controls playsinline preload="metadata">
+            <source
+              src={`${base}videos/02/hsteel_targets_Cam.mp4`}
+              type="video/mp4"
+            />
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2 class="section-title">Comparison with Previous Control</h2>
+
+      <p>
+        The Target Yaw +90° control result is compared with
+        <a href={`${base}en/control_model#hsteel`}>Part 1</a>.
+      </p>
+
+      <div class="comparison-grid comparison-grid-wide">
+        <article class="result-card">
+          <h3>Previous Target Yaw +90°</h3>
+          <img
+            class="result-chart"
+            src={`${base}/images/02/hsteel/hsteel_old_p90.png`}
+            alt="HSteel Target Yaw plus 90 degree control in Part 1"
+            loading="lazy"
+          />
+        </article>
+
+        <article class="result-card">
+          <h3>Current Target Yaw +90°</h3>
+          <img
+            class="result-chart"
+            src={`${base}/images/02/hsteel/hsteel_p90.png`}
+            alt="HSteel Target Yaw plus 90 degree control in Part 2"
+            loading="lazy"
+          />
+        </article>
+      </div>
+
+      <p class="comparison-conclusion">
+        The previous control reached the target angle quickly,
+        but showed overshoot and continuous thruster output.
+        With the current control, the time required to reach the target is longer,
+        but the thruster output decreases smoothly as the payload approaches
+        the target angle and becomes nearly zero afterward.
       </p>
     </section>
   </main>
-<!--
+
   <Pager
     prev={{
-      title: "目的",
-      href: "/ja/02/",
+      title: "Purpose",
+      href: "/en/02/",
     }}
     next={{
-      title: "平板",
-      href: "/ja/02/plate",
+      title: "Plate",
+      href: "/en/02/plate",
     }}
   />
--->
-  <Footer lang="en"/>
+
+  <Footer lang="en" />
 </Layout>
 
 <style>
-  .under-construction {
-    padding: 80px 0;
-    text-align: center;
-    color: var(--muted-color);
+  .result-layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.75fr) minmax(0, 1.25fr);
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .result-image img,
+  .result-chart {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .result-content h3,
+  .result-card h3 {
+    margin-top: 0;
+  }
+
+  .result-content p,
+  .result-card p {
+    line-height: 1.9;
+  }
+
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .result-card {
+    min-width: 0;
+  }
+
+  .result-card h4 {
+    margin: 1.5rem 0 0.6rem;
+  }
+
+  .comparison-conclusion {
+    max-width: 1100px;
+    margin: 2.5rem auto 0;
+    line-height: 1.9;
+    font-weight: 600;
+  }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+  }
+
+  .video-grid video {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+  }
+
+  @media (max-width: 900px) {
+    .video-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
