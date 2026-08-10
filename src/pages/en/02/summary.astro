@@ -1,32 +1,133 @@
 ---
 import Layout from "../../../layouts/Layout02.astro";
-import Pager from "../../../components/02/Pager.astro";
 import Header from "../../../components/02/Header.astro";
 import Footer from "../../../components/02/Footer.astro";
+import Pager from "../../../components/02/Pager.astro";
+import Style from "../../../components/02/Style.astro";
+
+const base = import.meta.env.BASE_URL;
 ---
 
-<Layout
-  title="Summary | Payload Yaw Control — Part 2"
-  lang="en"
->
-  <Header current="summary" lang="en" />
+<Layout title="Summary | Variable Target Yaw Control" lang="en">
+  <Style />
+  <Header current="summary" lang="en"/>
 
   <main class="part02-main">
+    <header class="page-header">
+      <h2 class="page-title">Summary</h2>
+      <p class="page-lead">
+        Low-output control and variable target yaw control were evaluated 
+        for three types of suspended payloads: H-steel, plate, and truss.
+      </p>
+    </header>
 
     <section class="content-section">
-      <p class="under-construction">
-        This page is currently under construction.
-      </p>
+      <div class="summary-layout">
+
+        <div class="summary-image">
+          <img
+            src={`${base}/images/02/summary/part1_part2_comparison.png`}
+            alt="Comparison of Part 1 and Part 2 control results at a target yaw angle of 90 degrees for H-steel, plate, and truss payloads"
+            loading="lazy"
+          />
+        </div>
+
+        <div class="summary-content">
+          <section class="summary-item">
+            <h2>Variable Target Yaw Control</h2>
+            <p>
+              In Part 1, the target yaw angle was fixed at 90°.
+              In Part 2, the target was made variable over the range
+              from −90° to +90°.
+            </p>
+            <p>
+              A single reinforcement learning model was used
+              to control the payload toward different target yaw angles.
+            </p>
+          </section>
+
+          <section class="summary-item">
+            <h2>Low-output Control</h2>
+            <p>
+              The controller provides the thruster output required
+              for rotation while reducing the output as the payload
+              approaches the target yaw angle.
+            </p>
+            <p>
+              Compared with Part 1, unnecessary thruster output
+              after reaching the target angle was substantially reduced.
+            </p>
+          </section>
+
+          <p class="summary-conclusion">
+            For all three payload types—H-steel, plate, and truss—
+            variable target yaw control and low-output control
+            were successfully combined.
+          </p>
+        </div>
+
+      </div>
     </section>
   </main>
 
-  <Footer lang="en"/>
+  <Pager
+    prev={{
+      title: "Truss",
+      href: "/en/02/truss",
+    }}
+  />
+
+  <Footer lang="en" />
 </Layout>
 
 <style>
-  .under-construction {
-    padding: 80px 0;
-    text-align: center;
-    color: var(--muted-color);
+  .summary-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(320px, 1.5fr);
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .summary-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .summary-content {
+    padding-top: 0.5rem;
+  }
+
+  .summary-item + .summary-item {
+    margin-top: 3rem;
+  }
+
+  .summary-item h2 {
+    margin: 0 0 1rem;
+    font-size: 1.6rem;
+  }
+
+  .summary-item p {
+    margin: 0 0 1rem;
+    line-height: 1.9;
+  }
+
+  .summary-conclusion {
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid #d8d8d8;
+    line-height: 1.9;
+    font-weight: 600;
+  }
+
+  @media (max-width: 1000px) {
+    .summary-layout {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .summary-content {
+      padding-top: 0;
+    }
   }
 </style>

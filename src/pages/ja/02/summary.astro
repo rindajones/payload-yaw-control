@@ -1,32 +1,129 @@
 ---
 import Layout from "../../../layouts/Layout02.astro";
-import Pager from "../../../components/02/Pager.astro";
 import Header from "../../../components/02/Header.astro";
 import Footer from "../../../components/02/Footer.astro";
+import Pager from "../../../components/02/Pager.astro";
+import Style from "../../../components/02/Style.astro";
+
+const base = import.meta.env.BASE_URL;
 ---
 
-<Layout
-  title="まとめ | Payload Yaw Control — Part 2"
-  lang="en"
->
-  <Header current="summary" lang="jp" />
+<Layout title="まとめ | 可変目標 Yaw 制御" lang="ja">
+  <Style />
+  <Header current="summary" lang="ja"/>
 
   <main class="part02-main">
+    <header class="page-header">
+      <h2 class="page-title">まとめ</h2>
+      <p class="page-lead">
+        H鋼・平板・トラスの三種類の吊り荷について、低出力制御と可変目標Yaw角への対応を検証した。
+      </p>
+    </header>
 
     <section class="content-section">
-      <p class="under-construction">
-        現在準備中。
-      </p>
+      <div class="summary-layout">
+
+        <div class="summary-image">
+          <img
+            src={`${base}/images/02/summary/part1_part2_comparison.png`}
+            alt="H鋼・平板・トラスにおけるPart 1とPart 2のTarget Yaw 90度制御比較"
+            loading="lazy"
+          />
+        </div>
+
+        <div class="summary-content">
+          <section class="summary-item">
+            <h2>可変目標Yaw角への対応</h2>
+            <p>
+              Part 1では90°に固定していた目標Yaw角を、
+              Part 2では−90°〜+90°の範囲で可変とした。
+            </p>
+            <p>
+              単一の強化学習モデルにより、
+              異なる目標Yaw角への制御を実現した。
+            </p>
+          </section>
+
+          <section class="summary-item">
+            <h2>低出力制御</h2>
+            <p>
+              目標Yaw角への旋回に必要なスラスター出力を確保しながら、
+              目標角への接近に伴って出力を低減する制御を実現した。
+            </p>
+            <p>
+              Part 1と比較して、目標角到達後の不要なスラスター出力が
+              大幅に抑えられている。
+            </p>
+          </section>
+
+          <p class="summary-conclusion">
+            H鋼・平板・トラスの三種類について、
+            可変目標Yaw制御と低出力制御の両立を確認した。
+          </p>
+        </div>
+
+      </div>
     </section>
   </main>
 
-  <Footer lang="jp"/>
+  <Pager
+    prev={{
+      title: "トラス",
+      href: "/ja/02/truss",
+    }}
+  />
+
+  <Footer lang="ja" />
 </Layout>
 
 <style>
-  .under-construction {
-    padding: 80px 0;
-    text-align: center;
-    color: var(--muted-color);
+  .summary-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(320px, 1.5fr);
+    gap: 3.5rem;
+    align-items: start;
+  }
+
+  .summary-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .summary-content {
+    padding-top: 0.5rem;
+  }
+
+  .summary-item + .summary-item {
+    margin-top: 3rem;
+  }
+
+  .summary-item h2 {
+    margin: 0 0 1rem;
+    font-size: 1.6rem;
+  }
+
+  .summary-item p {
+    margin: 0 0 1rem;
+    line-height: 1.9;
+  }
+
+  .summary-conclusion {
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid #d8d8d8;
+    line-height: 1.9;
+    font-weight: 600;
+  }
+
+  @media (max-width: 1000px) {
+    .summary-layout {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .summary-content {
+      padding-top: 0;
+    }
   }
 </style>
